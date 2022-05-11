@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+  ],
+  "globals": {
+    "jest": true,
+    "test": true,
+    "expect": true
+  },
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "no-console": "error"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts"]
+      }
+    }
+  }
+}

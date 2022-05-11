@@ -1,0 +1,5 @@
+mocks/
+node_modules/
+.vscode/
+.github/
+coverage/

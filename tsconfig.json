@@ -1,0 +1,24 @@
+
+{
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "dist",
+    "*.config.js"
+  ],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "es2018",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "declaration": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+  }
+}
