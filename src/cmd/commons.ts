@@ -1,13 +1,13 @@
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import { prompt } from 'enquirer';
 import configYaml from 'config-yaml';
 import { existsSync } from 'fs';
-import { requester } from '../helpers';
+import { requester } from '@helpers';
 import {
   Collection,
   PostmanAPI,
   WorkspaceDetails,
-} from '../integrations/postman';
+} from '@integrations/postman';
 import deepmerge from 'deepmerge';
 import { dump } from 'js-yaml';
 import { writeFile } from 'fs/promises';
@@ -39,30 +39,32 @@ export function registerCommonArgs(
   commonDefaults: CommonArgs
 ): void {
   program
-    .option(
-      '-c, --config <path>',
-      'config file. (default: ./.pm.yaml)',
-      commonDefaults.config || './.pm.yaml'
+    .addOption(
+      new Option('-c, --config <path>', 'config file.').default('./.pm.yaml')
     )
-    .option(
-      '-t, --token <string>',
-      'postman api token. (see: https://learning.postman.com/docs/developer/intro-api/#generating-a-postman-api-key)',
-      commonDefaults.token
+    .addOption(
+      new Option(
+        '-t, --token <string>',
+        'postman api token. (see: https://learning.postman.com/docs/developer/intro-api/#generating-a-postman-api-key)'
+      ).default(commonDefaults.token, 'null')
     )
-    .option(
-      '-d, --workdir <path>',
-      'workdir for keeping Postman As Code. (default: ./pac)',
-      commonDefaults.workdir || './pac'
+    .addOption(
+      new Option(
+        '-d, --workdir <path>',
+        'workdir for keeping Postman As Code.'
+      ).default(commonDefaults.workdir, './pac')
     )
-    .option(
-      '-w, --workspace <id>',
-      'workspace id to sync collections',
-      commonDefaults.workspace
+    .addOption(
+      new Option(
+        '-w, --workspace <id>',
+        'workspace id to sync collections'
+      ).default(commonDefaults.workspace, 'null')
     )
-    .option(
-      '--baseurl <url>',
-      'postman api url',
-      commonDefaults.baseurl || 'https://api.getpostman.com'
+    .addOption(
+      new Option('--baseurl <url>', 'postman api url').default(
+        commonDefaults.baseurl,
+        'https://api.getpostman.com'
+      )
     );
 }
 
@@ -119,7 +121,7 @@ export async function selectWorkspaceCollections(
     }),
   });
   return collections.filter((collection) =>
-    selected.value.includes(collection.name)
+    selected.value.includes(collection.id)
   );
 }
 

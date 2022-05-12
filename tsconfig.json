@@ -4,7 +4,13 @@
     "node_modules",
     "**/*.spec.ts",
     "dist",
-    "*.config.js"
+    "*.config.js",
+    "gen.ts",
+  ],
+  "include": [
+    "./src",
+    "./generated",
+    "./index.ts",
   ],
   "compilerOptions": {
     "module": "CommonJS",
@@ -20,5 +26,17 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-  }
+    "baseUrl": ".",
+    "paths": {
+      "@gen/*": ["./generated/*"],
+      "@cmd/*": ["./src/cmd/*"],
+      "@cmd": ["./src/cmd/index"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@helpers": ["./src/helpers/index"],
+      "@integrations/*": ["./src/integrations/*"],
+    }
+  },
+  "tsc-alias": {
+    "verbose": true,
+  },
 }

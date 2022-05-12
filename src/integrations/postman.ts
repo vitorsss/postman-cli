@@ -1,5 +1,6 @@
 import { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios';
-import { parseAxiosError } from '../helpers/errors';
+import { parseAxiosError } from '@helpers';
+import { CollectionDetails } from '@gen/postman/collection';
 
 export type WorkspaceType = 'personal' | 'private' | 'team' | 'public';
 
@@ -25,6 +26,10 @@ export interface Environment {
   id: string;
   name: string;
   uid: string;
+}
+
+export interface EnvironmentDetails extends Environment {
+  uid: never;
 }
 
 export class PostmanAPI {
@@ -66,6 +71,48 @@ export class PostmanAPI {
         },
       });
       return response.data.workspace;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status == 404) {
+          return;
+        }
+        throw parseAxiosError(err);
+      }
+    }
+  }
+
+  async getCollection(id: string): Promise<CollectionDetails | undefined> {
+    try {
+      const response = await this.requester({
+        method: 'GET',
+        baseURL: this.baseUrl,
+        url: `/collections/${id}`,
+        headers: {
+          ...this.authHeaders,
+        },
+      });
+      return response.data.collection;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status == 404) {
+          return;
+        }
+        throw parseAxiosError(err);
+      }
+    }
+  }
+
+  async getEnvironment(id: string): Promise<EnvironmentDetails | undefined> {
+    try {
+      const response = await this.requester({
+        method: 'GET',
+        baseURL: this.baseUrl,
+        url: `/environments/${id}`,
+        headers: {
+          ...this.authHeaders,
+        },
+      });
+      return response.data.environment;
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response?.status == 404) {

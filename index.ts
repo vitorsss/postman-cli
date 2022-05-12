@@ -1,9 +1,9 @@
 import { program } from 'commander';
 import configYaml from 'config-yaml';
-import { version } from './package.json';
-import { bootstrap } from './src/cmd';
+import { bootstrap } from '@cmd';
+import { collections } from './src/cmd/collections';
 
-program.version(version, '-v --version');
+program.version(process.env.npm_package_version || 'missing', '-v --version');
 
 const configFileFlags = ['-c', '--config'];
 
@@ -30,5 +30,6 @@ try {
 }
 
 bootstrap(program, config, config.bootstrap);
+collections(program, config, config.collections);
 
 program.parse();

@@ -172,3 +172,5 @@ dist
 .pm.yaml
 pnpm-lock.yaml
 package-lock.json
+pac
+generated

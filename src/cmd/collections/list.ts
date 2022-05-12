@@ -1,29 +1,25 @@
 import { Command } from 'commander';
-import { mkdir } from 'fs/promises';
 import {
   CommandReg,
   CommonArgs,
   createPostmanAPI,
   getWorkspace,
-  mergeAndSaveConfig,
   registerCommonArgs,
 } from '@cmd/commons';
 
-export interface BootstrapArgs {}
+export interface CollectionsListArgs {}
 
-export const bootstrap: CommandReg<BootstrapArgs> = (
+export const list: CommandReg<CollectionsListArgs> = (
   program: Command,
   commonDefaults: CommonArgs,
-  defaults?: BootstrapArgs
+  defaults?: CollectionsListArgs
 ): void => {
   defaults = defaults || {};
-  const cmd = program
-    .command('bootstrap')
-    .description('Init current folder to add required configuration files');
+  const cmd = program.command('list').description('List remote collections');
 
   registerCommonArgs(cmd, commonDefaults);
 
-  cmd.action(async function action(options: CommonArgs & BootstrapArgs) {
+  cmd.action(async function action(options: CommonArgs & CollectionsListArgs) {
     const pmAPI = await createPostmanAPI(options);
 
     const workspace = await getWorkspace(pmAPI, options);
@@ -33,10 +29,8 @@ export const bootstrap: CommandReg<BootstrapArgs> = (
       return;
     }
 
-    await mergeAndSaveConfig(options);
-
-    await mkdir(options.workdir, {
-      recursive: true,
+    workspace.collections.forEach((collection) => {
+      console.log(`${collection.name} (${collection.id})`);
     });
   });
 };
