@@ -1,0 +1,292 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-04/schema
+$schema: "http://json-schema.org/draft-04/schema"
+id: "http://schema.postman-cli.com/request/1.0.0/"
+title: Request
+type: object
+properties:
+  auth:
+    $ref: "./auth.yaml"
+  body:
+    $ref: "#/definitions/body"
+  description:
+    $ref: "#/definitions/description"
+  header:
+    $ref: "#/definitions/header-list"
+  method:
+    $ref: "#/definitions/method"
+  url:
+    $ref: "#/definitions/url"
+  $schema:
+    type: string
+required:
+  - url
+additionalProperties: false
+definitions:
+  body:
+    id: "#/definitions/body"
+    title: Body
+    oneOf:
+      - type: string
+      - type: object
+        title: RawJSONBody
+        properties:
+          json:
+            type: string
+        required:
+          - json
+        additionalProperties: false
+      - type: object
+        title: RawTextBody
+        properties:
+          text:
+            type: string
+        required:
+          - text
+        additionalProperties: false
+      - type: object
+        title: RawJavaScriptBody
+        properties:
+          javascript:
+            type: string
+        required:
+          - javascript
+        additionalProperties: false
+      - type: object
+        title: RawHTMLBody
+        properties:
+          html:
+            type: string
+        required:
+          - html
+        additionalProperties: false
+      - type: object
+        title: RawXMLBody
+        properties:
+          xml:
+            type: string
+        required:
+          - xml
+        additionalProperties: false
+      - type: object
+        title: URLEncodedBody
+        properties:
+          urlencoded:
+            type: array
+            items:
+              $ref: "#/definitions/parameter"
+        required:
+          - urlencoded
+        additionalProperties: false
+      - type: object
+        title: FormDataBody
+        properties:
+          formdata:
+            type: array
+            items:
+              type: object
+              title: FormParameter
+              anyOf:
+                - type: object
+                  title: FormTextParameter
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+                    disabled:
+                      type: boolean
+                      default: false
+                      description:
+                        When set to true, prevents this form data entity
+                        from being sent.
+                    type:
+                      type: string
+                      enum:
+                        - text
+                    contentType:
+                      type: string
+                      description:
+                        Override Content-Type header of this form data
+                        entity.
+                    description:
+                      $ref: "#/definitions/description"
+                  required:
+                    - key
+                  additionalProperties: false
+                - type: object
+                  title: FormFileParameter
+                  properties:
+                    key:
+                      type: string
+                    src:
+                      oneOf:
+                        - type: string
+                        - type: "null"
+                        - type: array
+                    disabled:
+                      type: boolean
+                      default: false
+                      description:
+                        When set to true, prevents this form data entity
+                        from being sent.
+                    type:
+                      type: string
+                      enum:
+                        - file
+                    contentType:
+                      type: string
+                      description:
+                        Override Content-Type header of this form data
+                        entity.
+                    description:
+                      $ref: "#/definitions/description"
+                  required:
+                    - key
+                  additionalProperties: false
+        required:
+          - formdata
+        additionalProperties: false
+      - type: object
+        title: FileBody
+        properties:
+          file:
+            type: object
+            properties:
+              src:
+                oneOf:
+                  - type: string
+                    description:
+                      Contains the name of the file to upload. _Not the
+                      path_.
+                  - type: "null"
+                    description:
+                      A null src indicates that no file has been selected
+                      as a part of the request body
+              content:
+                type: string
+            additionalProperties: false
+        required:
+          - file
+        additionalProperties: false
+      - type: object
+        title: GraphQLBody
+        properties:
+          graphql:
+            type: object
+            properties:
+              query:
+                type: string
+              variables:
+                type: string
+            required:
+              - query
+              - variables
+            additionalProperties: false
+        required:
+          - graphql
+        additionalProperties: false
+  description:
+    id: "#/definitions/description"
+    title: Description
+    description: A Description can be a raw text, or be an object, which holds the description along with its format.
+    oneOf:
+      - type: string
+      - type: object
+        title: DescriptionContent
+        properties:
+          content:
+            type: string
+            description: The content of the description goes here, as a raw string.
+          type:
+            type: string
+            description: |
+              Holds the mime type of the raw description content. E.g: 'text/markdown' or 'text/html'.
+              The type is used to correctly render the description when generating documentation, or in the Postman app.
+          version:
+            type: string
+            description: Description can have versions associated with it, which should be put in this property.
+        required:
+          - content
+        additionalProperties: false
+  header-list:
+    id: "#/definitions/header-list"
+    title: Header List
+    description: A representation for a list of headers
+    type: array
+    items:
+      $ref: "#/definitions/parameter"
+  method:
+    id: "#/definitions/method"
+    title: Method
+    anyOf:
+      - description: The Standard HTTP method associated with this request.
+        title: HTTPMethod
+        type: string
+        enum:
+          - GET
+          - PUT
+          - POST
+          - PATCH
+          - DELETE
+          - COPY
+          - HEAD
+          - OPTIONS
+          - LINK
+          - UNLINK
+          - PURGE
+          - LOCK
+          - UNLOCK
+          - PROPFIND
+          - VIEW
+      - description: The Custom HTTP method associated with this request.
+        type: string
+  parameter:
+    id: "#/definitions/parameter"
+    title: Parameter
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+      disabled:
+        type: boolean
+        default: false
+        description: If set to true, the current parameter will not be sent with requests.
+      description:
+        $ref: "#/definitions/description"
+    required:
+      - key
+    additionalProperties: false
+  url:
+    description:
+      If object, contains the complete broken-down URL for this request.
+      If string, contains the literal request URL.
+    id: "#/definitions/url"
+    title: URLBase
+    oneOf:
+      - type: object
+        title: URL
+        properties:
+          base:
+            type: string
+            description:
+              The string representation of the request URL, including the
+              protocol, host, path, hash and path variable(s).
+          query:
+            type: array
+            description:
+              An array of QueryParams, which is basically the query string
+              part of the URL, parsed into separate variables
+            items:
+              $ref: "#/definitions/parameter"
+          variable:
+            type: array
+            description:
+              Postman supports path variables with the syntax `/path/:variableName/to/somewhere`.
+              These variables are stored in this field.
+            items:
+              $ref: "#/definitions/parameter"
+        required:
+          - base
+        additionalProperties: false
+      - type: string
