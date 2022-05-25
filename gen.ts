@@ -60,8 +60,18 @@ async function gen() {
       dest: './generated/postman/collection.ts',
     },
     {
+      schema: schemaFromFile('./schemas/auth.yaml', 'yaml'),
+      dest: './generated/types/auth.ts',
+      cwd: './schemas/',
+    },
+    {
       schema: schemaFromFile('./schemas/request.yaml', 'yaml'),
       dest: './generated/types/request.ts',
+      cwd: './schemas/',
+    },
+    {
+      schema: schemaFromFile('./schemas/response.yaml', 'yaml'),
+      dest: './generated/types/response.ts',
       cwd: './schemas/',
     },
   ];

@@ -4,8 +4,6 @@ id: "http://schema.postman-cli.com/request/1.0.0/"
 title: Request
 type: object
 properties:
-  auth:
-    $ref: "./auth.yaml"
   body:
     $ref: "#/definitions/body"
   description:
@@ -14,6 +12,10 @@ properties:
     $ref: "#/definitions/header-list"
   method:
     $ref: "#/definitions/method"
+  prerequest:
+    $ref: "#/definitions/scripts"
+  test:
+    $ref: "#/definitions/scripts"
   url:
     $ref: "#/definitions/url"
   $schema:
@@ -185,6 +187,54 @@ definitions:
         required:
           - graphql
         additionalProperties: false
+  cookie:
+    type: object
+    title: Cookie
+    id: "#/definitions/cookie"
+    description: A Cookie, that follows the [Google Chrome format](https://developer.chrome.com/extensions/cookies)
+    properties:
+      domain:
+        type: string
+        description: The domain for which this cookie is valid.
+      expires:
+        oneOf:
+        - type: string
+        - type: number
+        description: When the cookie expires.
+      maxAge:
+        type: string
+      hostOnly:
+        type: boolean
+        description: True if the cookie is a host-only cookie. (i.e. a request's URL
+          domain must exactly match the domain of the cookie).
+      httpOnly:
+        type: boolean
+        description: Indicates if this cookie is HTTP Only. (if True, the cookie is
+          inaccessible to client-side scripts)
+      name:
+        type: string
+        description: This is the name of the Cookie.
+      path:
+        type: string
+        description: The path associated with the Cookie.
+      secure:
+        type: boolean
+        description: Indicates if the 'secure' flag is set on the Cookie, meaning
+          that it is transmitted over secure connections only. (typically HTTPS)
+      session:
+        type: boolean
+        description: True if the cookie is a session cookie.
+      value:
+        type: string
+        description: The value of the Cookie.
+      extensions:
+        type: array
+        description: Custom attributes for a cookie go here, such as the [Priority
+          Field](https://code.google.com/p/chromium/issues/detail?id=232693)
+    required:
+    - domain
+    - path
+    additionalProperties: false
   description:
     id: "#/definitions/description"
     title: Description
@@ -257,6 +307,27 @@ definitions:
     required:
       - key
     additionalProperties: false
+  scripts:
+    id: "#/definitions/script"
+    title: Scripts
+    type: array
+    items:
+      $ref: "#/definitions/script"
+  script:
+    id: "#/definitions/script"
+    title: Script
+    description: A script is a snippet of Javascript code that can be used to to perform
+      setup or teardown operations on a particular response.
+    oneOf:
+      - type: string
+      - title: ScriptSrc
+        type: object
+        properties:
+          src:
+            type: string
+        required:
+          - src
+        additionalProperties: false
   url:
     description:
       If object, contains the complete broken-down URL for this request.

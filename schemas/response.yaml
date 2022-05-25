@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-04/schema
+$schema: http://json-schema.org/draft-04/schema#
+id: "http://schema.postman-cli.com/response/1.0.0/"
+title: Response
+description: A response represents an HTTP response.
+properties:
+  body:
+    type:
+    - 'null'
+    - string
+    description: The raw text of the response.
+  code:
+    type: integer
+    description: 'The numerical response code, example: 200, 201, 404, etc.'
+  cookie:
+    type: array
+    items:
+      $ref: "./request.yaml#/definitions/cookie"
+  header:
+    $ref: "./request.yaml#/definitions/header-list"
+  originalRequest:
+    $ref: "./request.yaml"
+  status:
+    type: string
+    description: 'The response status, e.g: ''200 OK'''
+  $schema:
+    type: string
+required:
+  - originalRequest
+  - body
+  - code
+additionalProperties: false

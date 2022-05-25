@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=http://json-schema.org/draft-04/schema
 $schema: http://json-schema.org/draft-04/schema#
+id: "http://schema.postman-cli.com/auth/1.0.0/"
 type: object
 title: Auth
-id: "http://schema.postman-cli.com/auth/1.0.0/"
 description: Represents authentication helpers provided by Postman
 oneOf:
   - type: object
