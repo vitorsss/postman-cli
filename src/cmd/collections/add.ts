@@ -10,6 +10,8 @@ import {
   registerCommonArgs,
   selectWorkspaceCollections,
 } from '@cmd/commons';
+import { parseCollectionToLocal } from '@helpers/parser';
+import { saveLocalCollection } from '@helpers/local';
 
 export interface CollectionsAddArgs {}
 
@@ -46,7 +48,6 @@ export const add: CommandReg<CollectionsAddArgs> = (
     } else {
       collections = await selectWorkspaceCollections(workspace.collections);
     }
-    console.log(collections);
     for await (const collection of collections) {
       if (existsSync(path.join(options.workdir, collection.name))) {
         console.log(`Skipping existing collection "${collection.name}"`);
@@ -54,7 +55,12 @@ export const add: CommandReg<CollectionsAddArgs> = (
       }
       console.log(`Fetching collection "${collection.name}"`);
       const collectionDetails = await pmAPI.getCollection(collection.id);
-      console.log(JSON.stringify(collectionDetails, undefined, '  '));
+      if (!collectionDetails) {
+        console.log(`Collection "${collection.name}" not found`);
+        continue;
+      }
+      const localCollection = parseCollectionToLocal(collectionDetails);
+      await saveLocalCollection(localCollection);
     }
   });
 };

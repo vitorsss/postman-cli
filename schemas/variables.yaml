@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-04/schema
+$schema: http://json-schema.org/draft-04/schema#
+id: "http://schema.postman-cli.com/variables/1.0.0/"
+title: Variables
+properties:
+  variables:
+    type: array
+    items:
+      $ref: "#/definitions/parameter"
+  $schema:
+    type: string
+required:
+  - variables
+additionalProperties: false
+definitions:
+  parameter:
+    id: "#/definitions/parameter"
+    title: Parameter
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+      disabled:
+        type: boolean
+        default: false
+        description: If set to true, the current parameter will not be sent with requests.
+      description:
+        $ref: "./description.yaml"
+    required:
+      - key
+    additionalProperties: false

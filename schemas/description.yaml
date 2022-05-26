@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-04/schema
+$schema: http://json-schema.org/draft-04/schema#
+id: "http://schema.postman-cli.com/description/1.0.0/"
+title: Description
+description: A Description can be a raw text, or be an object, which holds the description along with its format.
+oneOf:
+  - type: string
+  - type: object
+    title: DescriptionContent
+    properties:
+      content:
+        type: string
+        description: The content of the description goes here, as a raw string.
+      type:
+        type: string
+        description: |
+          Holds the mime type of the raw description content. E.g: 'text/markdown' or 'text/html'.
+          The type is used to correctly render the description when generating documentation, or in the Postman app.
+      version:
+        type: string
+        description: Description can have versions associated with it, which should be put in this property.
+    required:
+      - content
+    additionalProperties: false

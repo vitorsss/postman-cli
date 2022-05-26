@@ -74,6 +74,11 @@ async function gen() {
       dest: './generated/types/response.ts',
       cwd: './schemas/',
     },
+    {
+      schema: schemaFromFile('./schemas/variables.yaml', 'yaml'),
+      dest: './generated/types/variables.ts',
+      cwd: './schemas/',
+    },
   ];
   for await (const mapping of mappings) {
     await generateTSFromSchema(mapping);

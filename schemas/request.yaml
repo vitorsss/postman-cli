@@ -7,7 +7,7 @@ properties:
   body:
     $ref: "#/definitions/body"
   description:
-    $ref: "#/definitions/description"
+    $ref: "./description.yaml"
   header:
     $ref: "#/definitions/header-list"
   method:
@@ -75,7 +75,7 @@ definitions:
           urlencoded:
             type: array
             items:
-              $ref: "#/definitions/parameter"
+              $ref: "./variables.yaml#/definitions/parameter"
         required:
           - urlencoded
         additionalProperties: false
@@ -111,7 +111,7 @@ definitions:
                         Override Content-Type header of this form data
                         entity.
                     description:
-                      $ref: "#/definitions/description"
+                      $ref: "./description.yaml"
                   required:
                     - key
                   additionalProperties: false
@@ -141,7 +141,7 @@ definitions:
                         Override Content-Type header of this form data
                         entity.
                     description:
-                      $ref: "#/definitions/description"
+                      $ref: "./description.yaml"
                   required:
                     - key
                   additionalProperties: false
@@ -235,36 +235,13 @@ definitions:
     - domain
     - path
     additionalProperties: false
-  description:
-    id: "#/definitions/description"
-    title: Description
-    description: A Description can be a raw text, or be an object, which holds the description along with its format.
-    oneOf:
-      - type: string
-      - type: object
-        title: DescriptionContent
-        properties:
-          content:
-            type: string
-            description: The content of the description goes here, as a raw string.
-          type:
-            type: string
-            description: |
-              Holds the mime type of the raw description content. E.g: 'text/markdown' or 'text/html'.
-              The type is used to correctly render the description when generating documentation, or in the Postman app.
-          version:
-            type: string
-            description: Description can have versions associated with it, which should be put in this property.
-        required:
-          - content
-        additionalProperties: false
   header-list:
     id: "#/definitions/header-list"
     title: Header List
     description: A representation for a list of headers
     type: array
     items:
-      $ref: "#/definitions/parameter"
+      $ref: "./variables.yaml#/definitions/parameter"
   method:
     id: "#/definitions/method"
     title: Method
@@ -290,23 +267,6 @@ definitions:
           - VIEW
       - description: The Custom HTTP method associated with this request.
         type: string
-  parameter:
-    id: "#/definitions/parameter"
-    title: Parameter
-    properties:
-      key:
-        type: string
-      value:
-        type: string
-      disabled:
-        type: boolean
-        default: false
-        description: If set to true, the current parameter will not be sent with requests.
-      description:
-        $ref: "#/definitions/description"
-    required:
-      - key
-    additionalProperties: false
   scripts:
     id: "#/definitions/script"
     title: Scripts
@@ -349,14 +309,14 @@ definitions:
               An array of QueryParams, which is basically the query string
               part of the URL, parsed into separate variables
             items:
-              $ref: "#/definitions/parameter"
+              $ref: "./variables.yaml#/definitions/parameter"
           variable:
             type: array
             description:
               Postman supports path variables with the syntax `/path/:variableName/to/somewhere`.
               These variables are stored in this field.
             items:
-              $ref: "#/definitions/parameter"
+              $ref: "./variables.yaml#/definitions/parameter"
         required:
           - base
         additionalProperties: false
