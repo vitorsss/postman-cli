@@ -1,22 +1,12 @@
-import { Auth } from '@gen/types/auth';
-import { Request } from '@gen/types/request';
-import { Response } from '@gen/types/response';
-import { Variables } from '@gen/types/variables';
-
-export interface LocalCollection extends Folder {
-  variables?: Variables;
-}
-
-export type Item = Folder | Response | string;
-
-export interface Folder {
-  itens: {
-    [key: string]: Item;
-  };
-  request?: Request;
-  auth?: Auth;
-}
+import { LocalCollection } from "@pm-types/local";
+import { dump } from 'js-yaml';
 
 export async function saveLocalCollection(
   collection: LocalCollection
-): Promise<void> {}
+): Promise<void> {
+  console.log(dump(collection, {
+    noRefs: true,
+    sortKeys: true,
+    lineWidth: 4000,
+  }));
+}

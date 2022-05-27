@@ -10,6 +10,7 @@
   "include": [
     "./src",
     "./generated",
+    "./bin.ts",
     "./index.ts",
   ],
   "compilerOptions": {
@@ -34,6 +35,9 @@
       "@helpers/*": ["./src/helpers/*"],
       "@helpers": ["./src/helpers/index"],
       "@integrations/*": ["./src/integrations/*"],
+      "@integrations": ["./src/integrations/index"],
+      "@pm-types/*": ["./src/types/*"],
+      "@pm-types": ["./src/types/index"],
     },
   },
   "tsc-alias": {

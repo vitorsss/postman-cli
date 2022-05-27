@@ -1,15 +1,12 @@
 import { Command } from 'commander';
 import { mkdir } from 'fs/promises';
 import {
-  CommandReg,
-  CommonArgs,
   createPostmanAPI,
   getWorkspace,
   mergeAndSaveConfig,
   registerCommonArgs,
 } from '@cmd/commons';
-
-export interface BootstrapArgs {}
+import { BootstrapArgs, CommandReg, CommonArgs } from '@pm-types/cmd';
 
 export const bootstrap: CommandReg<BootstrapArgs> = (
   program: Command,

@@ -1,36 +1,6 @@
 import { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios';
 import { parseAxiosError } from '@helpers';
-import { CollectionDetails } from '@gen/postman/collection';
-
-export type WorkspaceType = 'personal' | 'private' | 'team' | 'public';
-
-export interface Workspace {
-  id: string;
-  name: string;
-  type: WorkspaceType;
-  description: string;
-}
-
-export interface WorkspaceDetails extends Workspace {
-  collections: Collection[];
-  environments: Environment[];
-}
-
-export interface Collection {
-  id: string;
-  name: string;
-  uid: string;
-}
-
-export interface Environment {
-  id: string;
-  name: string;
-  uid: string;
-}
-
-export interface EnvironmentDetails extends Environment {
-  uid: never;
-}
+import { CollectionDetails, EnvironmentDetails, Workspace, WorkspaceDetails } from '@pm-types/postman';
 
 export class PostmanAPI {
   private requester: AxiosInstance;

@@ -1,15 +1,8 @@
 import { Command } from 'commander';
-import { CommandReg, CommonArgs, registerCommonArgs } from '@cmd/commons';
-import { CollectionsAddArgs, add } from '@cmd/collections/add';
-import { CollectionsListArgs, list } from '@cmd/collections/list';
-
-export { CollectionsAddArgs } from '@cmd/collections/add';
-export { CollectionsListArgs } from '@cmd/collections/list';
-
-export interface CollectionsArgs {
-  list?: CollectionsListArgs;
-  add?: CollectionsAddArgs;
-}
+import { registerCommonArgs } from '@cmd/commons';
+import { checkout } from '@cmd/collections/checkout';
+import { list } from '@cmd/collections/list';
+import { CollectionsArgs, CommandReg, CommonArgs } from '@pm-types/cmd';
 
 export const collections: CommandReg<CollectionsArgs> = (
   program: Command,
@@ -23,6 +16,6 @@ export const collections: CommandReg<CollectionsArgs> = (
 
   registerCommonArgs(cmd, commonDefaults);
 
-  add(cmd, commonDefaults, defaults.add);
+  checkout(cmd, commonDefaults, defaults.checkout);
   list(cmd, commonDefaults, defaults.list);
 };

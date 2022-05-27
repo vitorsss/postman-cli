@@ -1,13 +1,10 @@
 import { Command } from 'commander';
 import {
-  CommandReg,
-  CommonArgs,
   createPostmanAPI,
   getWorkspace,
   registerCommonArgs,
 } from '@cmd/commons';
-
-export interface CollectionsListArgs {}
+import { CollectionsListArgs, CommandReg, CommonArgs } from '@pm-types/cmd';
 
 export const list: CommandReg<CollectionsListArgs> = (
   program: Command,

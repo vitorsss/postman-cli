@@ -1,35 +1,33 @@
 import { Command } from 'commander';
 import { existsSync } from 'fs';
 import path from 'path';
-import { Collection } from '@integrations/postman';
 import {
-  CommandReg,
-  CommonArgs,
   createPostmanAPI,
   getWorkspace,
   registerCommonArgs,
   selectWorkspaceCollections,
+  mergeAndSaveConfig,
 } from '@cmd/commons';
 import { parseCollectionToLocal } from '@helpers/parser';
 import { saveLocalCollection } from '@helpers/local';
+import { CollectionsCheckoutArgs, CommandReg, CommonArgs, Configs } from '@pm-types/cmd';
+import { Collection } from '@pm-types/postman';
 
-export interface CollectionsAddArgs {}
-
-export const add: CommandReg<CollectionsAddArgs> = (
+export const checkout: CommandReg<CollectionsCheckoutArgs> = (
   program: Command,
-  commonDefaults: CommonArgs,
-  defaults?: CollectionsAddArgs
+  commonDefaults: Configs,
+  defaults?: CollectionsCheckoutArgs
 ): void => {
   defaults = defaults || {};
   const cmd = program
-    .command('add [name|id]')
-    .description('Add an remote collection to local workdir');
+    .command('checkout [name|id]')
+    .description('Checkout an remote collection to local workdir');
 
   registerCommonArgs(cmd, commonDefaults);
 
   cmd.action(async function action(
     idName: string,
-    options: CommonArgs & CollectionsAddArgs
+    options: CommonArgs & CollectionsCheckoutArgs
   ) {
     const pmAPI = await createPostmanAPI(options);
 
@@ -39,6 +37,8 @@ export const add: CommandReg<CollectionsAddArgs> = (
       console.log('Could not find a valid workspace.');
       return;
     }
+
+    const addedCollections: Record<string, string> = {};
 
     let collections: Collection[] = [];
     if (idName) {
@@ -61,6 +61,11 @@ export const add: CommandReg<CollectionsAddArgs> = (
       }
       const localCollection = parseCollectionToLocal(collectionDetails);
       await saveLocalCollection(localCollection);
+      addedCollections[collection.name] = collection.id;
     }
+    await mergeAndSaveConfig({
+      ...options,
+      collections: addedCollections,
+    });
   });
 };

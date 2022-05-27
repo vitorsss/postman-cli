@@ -3,36 +3,12 @@ import { prompt } from 'enquirer';
 import configYaml from 'config-yaml';
 import { existsSync } from 'fs';
 import { requester } from '@helpers';
-import {
-  Collection,
-  PostmanAPI,
-  WorkspaceDetails,
-} from '@integrations/postman';
+import { PostmanAPI } from '@integrations/postman';
 import deepmerge from 'deepmerge';
 import { dump } from 'js-yaml';
 import { writeFile } from 'fs/promises';
-
-interface PromptValue<T> {
-  value: T;
-}
-
-export interface CommonArgs {
-  config: string;
-  token: string;
-  baseurl: string;
-  workdir: string;
-  workspace?: string;
-}
-
-export type OtherConfigs = {
-  [key: string]: any;
-} & { [key in keyof CommonArgs]?: never };
-
-export type CommandReg<T> = (
-  program: Command,
-  commonDefaults: CommonArgs,
-  defaults?: T
-) => void;
+import { CommonArgs, Configs, OtherConfigs, PromptValue } from '@pm-types/cmd';
+import { Collection, WorkspaceDetails } from '@pm-types/postman';
 
 export function registerCommonArgs(
   program: Command,
@@ -52,7 +28,7 @@ export function registerCommonArgs(
       new Option(
         '-d, --workdir <path>',
         'workdir for keeping Postman As Code.'
-      ).default(commonDefaults.workdir, './pac')
+      ).default(commonDefaults.workdir || './pac', './pac')
     )
     .addOption(
       new Option(
@@ -62,7 +38,7 @@ export function registerCommonArgs(
     )
     .addOption(
       new Option('--baseurl <url>', 'postman api url').default(
-        commonDefaults.baseurl,
+        commonDefaults.baseurl || 'https://api.getpostman.com',
         'https://api.getpostman.com'
       )
     );
@@ -126,7 +102,7 @@ export async function selectWorkspaceCollections(
 }
 
 export async function mergeAndSaveConfig(
-  options: CommonArgs,
+  options: Configs,
   aditionalConfig: OtherConfigs = {}
 ) {
   let config = {};
@@ -139,6 +115,7 @@ export async function mergeAndSaveConfig(
     baseurl: options.baseurl,
     workdir: options.workdir,
     workspace: options.workspace,
+    collections: options.collections,
     ...aditionalConfig,
   });
 
