@@ -25,6 +25,15 @@ export const schemas = {
 
 export interface LocalCollection extends Folder {
   variables?: Variables;
+  name: string;
+}
+
+export function instanceOfResponse(object: any): object is Response {
+  return 'originalRequest' in object;
+}
+
+export function instanceOfFolder(object: any): object is Folder {
+  return 'itens' in object;
 }
 
 export type Item = Folder | Response | string;

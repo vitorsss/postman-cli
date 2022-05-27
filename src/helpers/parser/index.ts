@@ -52,7 +52,9 @@ function parseDescriptionToLocal(value: DefinitionsDescription): Description {
   return description;
 }
 
-function parseVariableToLocal(value: Variable | QueryParam | string): Parameter {
+function parseVariableToLocal(
+  value: Variable | QueryParam | string
+): Parameter {
   if (typeof value === 'string') {
     throw Error(
       'unmapped conversion from variable string to local parameter value'
@@ -187,12 +189,12 @@ function parseRawUrlToLocal(value: string): LocalURL {
   if (search && search.includes('#/')) {
     let hash;
     [search, hash] = search.split('#/', 2);
-    value = `${value}#/${hash}`
+    value = `${value}#/${hash}`;
   }
 
   const url: LocalURL = {
     base: value,
-  }
+  };
 
   if (search) {
     url.query = search.split('&').map((param: string): Parameter => {
@@ -201,7 +203,7 @@ function parseRawUrlToLocal(value: string): LocalURL {
         key,
         value,
       };
-    })
+    });
   }
   return url;
 }
@@ -374,13 +376,13 @@ function parseCookieToLocal(value: PMCookie): Cookie {
     secure: value.secure,
     session: value.session,
     value: value.value,
-  }
-  return cookie
+  };
+  return cookie;
 }
 
 function parseResponseToLocal(value: PMResponse): {
-  name: string,
-  response: Response,
+  name: string;
+  response: Response;
 } {
   // @ts-ignore
   let name: string = value.name || '';
@@ -390,7 +392,7 @@ function parseResponseToLocal(value: PMResponse): {
     code: value.code || 0,
     status: value.status,
     originalRequest: parseRequestToLocal(value.originalRequest || {}),
-  }
+  };
 
   if (value.header) {
     response.header = parseHeaderToLocal(value.header);
@@ -403,7 +405,7 @@ function parseResponseToLocal(value: PMResponse): {
   return {
     name,
     response,
-  }
+  };
 }
 
 function parseItemToLocal(value: Items): {
@@ -414,23 +416,27 @@ function parseItemToLocal(value: Items): {
   const item: Item = {
     itens: {},
   };
+  if (value.auth) {
+    // @ts-ignore
+    item.auth = parseAuthToLocal(value.auth);
+  }
   if (value.request) {
     // @ts-ignore
     const request = parseRequestToLocal(value.request);
     item.request = request;
     if (value.event) {
-      const itens = parseEventsToLocal(value.event)
+      const itens = parseEventsToLocal(value.event);
       for (const name in itens) {
         if (name.includes('prerequest')) {
           request.prerequest = request.prerequest || [];
           request.prerequest.push({
-            src: `./${name}`
-          })
+            src: `./${name}`,
+          });
         } else if (name.includes('test')) {
           request.test = request.test || [];
           request.test.push({
-            src: `./${name}`
-          })
+            src: `./${name}`,
+          });
         }
         item.itens[name] = itens[name];
       }
@@ -438,10 +444,7 @@ function parseItemToLocal(value: Items): {
     if (value.response) {
       // @ts-ignore
       for (const pmResponse: PMResponse of value.response) {
-        const {
-          name,
-          response,
-        } = parseResponseToLocal(pmResponse);
+        const { name, response } = parseResponseToLocal(pmResponse);
         item.itens[`${name}_response.yaml`] = response;
       }
     }
@@ -462,6 +465,7 @@ export function parseCollectionToLocal(
   value: CollectionDetails
 ): LocalCollection {
   const localCollection: LocalCollection = {
+    name: value.info.name,
     itens: {},
   };
 

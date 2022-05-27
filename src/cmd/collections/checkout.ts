@@ -60,7 +60,7 @@ export const checkout: CommandReg<CollectionsCheckoutArgs> = (
         continue;
       }
       const localCollection = parseCollectionToLocal(collectionDetails);
-      await saveLocalCollection(localCollection);
+      await saveLocalCollection(commonDefaults, localCollection);
       addedCollections[collection.name] = collection.id;
     }
     await mergeAndSaveConfig({
