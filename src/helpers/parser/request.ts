@@ -1,9 +1,9 @@
 import { Request, schemas } from '@pm-types/local';
 import { Request as PMRequest } from '@pm-types/postman';
-import { parseBodyToLocal } from '@helpers/parser/body';
-import { parseDescriptionToLocal } from '@helpers/parser/description';
-import { parseHeaderToLocal } from '@helpers/parser/header';
-import { parseUrlToLocal } from '@helpers/parser/url';
+import { parseBodyToLocal, parseBodyToPostman } from '@helpers/parser/body';
+import { parseDescriptionToLocal, parseDescriptionToPostman } from '@helpers/parser/description';
+import { parseHeaderToLocal, parseHeaderToPostman } from '@helpers/parser/header';
+import { parseUrlToLocal, parseUrlToPostman } from '@helpers/parser/url';
 
 export function parseRequestToLocal(value: PMRequest): Request {
   if (typeof value === 'string') {
@@ -26,6 +26,27 @@ export function parseRequestToLocal(value: PMRequest): Request {
 
   if (value.header) {
     request.header = parseHeaderToLocal(value.header);
+  }
+
+  return request;
+}
+
+export function parseRequestToPostman(value: Request): PMRequest {
+  const request: PMRequest = {
+    url: parseUrlToPostman(value.url || ''),
+    method: value.method,
+  };
+
+  if (value.description) {
+    request.description = parseDescriptionToPostman(value.description);
+  }
+
+  if (value.body) {
+    request.body = parseBodyToPostman(value.body);
+  }
+
+  if (value.header) {
+    request.header = parseHeaderToPostman(value.header);
   }
 
   return request;

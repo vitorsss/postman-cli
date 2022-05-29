@@ -15,3 +15,18 @@ export function parseDescriptionToLocal(
   };
   return description;
 }
+
+export function parseDescriptionToPostman(
+  value: Description
+): DefinitionsDescription {
+  if (typeof value === 'string') {
+    value = {
+      content: value,
+    };
+  }
+  const description: DefinitionsDescription = {
+    content: value.content,
+    type: value?.type,
+  };
+  return description;
+}

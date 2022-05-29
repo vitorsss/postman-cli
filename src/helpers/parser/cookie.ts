@@ -17,3 +17,20 @@ export function parseCookieToLocal(value: PMCookie): Cookie {
   };
   return cookie;
 }
+
+export function parseCookieToPostman(value: Cookie): PMCookie {
+  const cookie: PMCookie = {
+    domain: value.domain,
+    path: value.path,
+    expires: value.expires,
+    extensions: value.extensions,
+    hostOnly: value.hostOnly,
+    httpOnly: value.httpOnly,
+    maxAge: value.maxAge,
+    name: value.name,
+    secure: value.secure,
+    session: value.session,
+    value: value.value,
+  };
+  return cookie;
+}

@@ -60,24 +60,24 @@ async function gen() {
       dest: './generated/postman/collection.ts',
     },
     {
-      schema: schemaFromFile('./schemas/auth.yaml', 'yaml'),
+      schema: schemaFromFile('./docs/schemas/auth/1.0.0/auth.yaml', 'yaml'),
       dest: './generated/types/auth.ts',
-      cwd: './schemas/',
+      cwd: './docs/schemas/auth/1.0.0/',
     },
     {
-      schema: schemaFromFile('./schemas/request.yaml', 'yaml'),
+      schema: schemaFromFile('./docs/schemas/request/1.0.0/request.yaml', 'yaml'),
       dest: './generated/types/request.ts',
-      cwd: './schemas/',
+      cwd: './docs/schemas/request/1.0.0/',
     },
     {
-      schema: schemaFromFile('./schemas/response.yaml', 'yaml'),
+      schema: schemaFromFile('./docs/schemas/response/1.0.0/response.yaml', 'yaml'),
       dest: './generated/types/response.ts',
-      cwd: './schemas/',
+      cwd: './docs/schemas/response/1.0.0/',
     },
     {
-      schema: schemaFromFile('./schemas/variables.yaml', 'yaml'),
+      schema: schemaFromFile('./docs/schemas/variables/1.0.0/variables.yaml', 'yaml'),
       dest: './generated/types/variables.ts',
-      cwd: './schemas/',
+      cwd: './docs/schemas/variables/1.0.0/',
     },
   ];
   for await (const mapping of mappings) {

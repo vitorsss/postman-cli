@@ -1,9 +1,12 @@
-import { LocalCollection } from '@pm-types/local';
+import { instanceOfFolder, LocalCollection } from '@pm-types/local';
 import { CollectionDetails } from '@pm-types/postman';
-import { parseAuthToLocal } from '@helpers/parser/auth';
+import { parseAuthToLocal, parseAuthToPostman } from '@helpers/parser/auth';
 import { parseEventsToLocal } from '@helpers/parser/events';
-import { parseItemToLocal } from '@helpers/parser/item';
-import { parseVariablesToLocal } from '@helpers/parser/variables';
+import { parseFolderToPostman, parseItemToLocal } from '@helpers/parser/item';
+import {
+  parseVariablesToLocal,
+  parseVariableToPostman,
+} from '@helpers/parser/variables';
 
 export function parseCollectionToLocal(
   value: CollectionDetails
@@ -31,4 +34,34 @@ export function parseCollectionToLocal(
   }
 
   return localCollection;
+}
+
+export function parseCollectionToPostman(
+  value: LocalCollection
+): CollectionDetails {
+  const collection: CollectionDetails = {
+    info: {
+      name: value.name,
+      schema:
+        'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',
+    },
+    item: [],
+  };
+
+  if (value.auth) {
+    collection.auth = parseAuthToPostman(value.auth);
+  }
+
+  if (value.variables) {
+    collection.variable = value.variables.variables.map(parseVariableToPostman);
+  }
+
+  for (const itemName in value.itens) {
+    const item = value.itens[itemName];
+    if (instanceOfFolder(item)) {
+      collection.item.push(parseFolderToPostman(itemName, item));
+    }
+  }
+
+  return collection;
 }

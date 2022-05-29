@@ -1,9 +1,34 @@
-import { Auth, AuthAttribute } from '@pm-types/local';
+import {
+  Auth,
+  AuthAttribute,
+  instanceOfAPIKeyAuth,
+  instanceOfAWSv4Auth,
+  instanceOfBasicAuth,
+  instanceOfBearerAuth,
+  instanceOfDigestAuth,
+  instanceOfEgdeGridAuth,
+  instanceOfHawkAuth,
+  instanceOfNoAuth,
+  instanceOfNTLMAuth,
+  instanceOfOAuth1Auth,
+  instanceOfOAuth2Auth,
+} from '@pm-types/local';
 import { Auth as PMAuth, Auth1 } from '@pm-types/postman';
 
 function parseAuthAttributeToLocal(value: Auth1): AuthAttribute {
   const authAttribute: AuthAttribute = {
-    ...value,
+    key: value.key,
+    type: value.type,
+    value: value.value,
+  };
+  return authAttribute;
+}
+
+function parseAuthAttributeToPostman(value: AuthAttribute): Auth1 {
+  const authAttribute: Auth1 = {
+    key: value.key,
+    type: value.type,
+    value: value.value,
   };
   return authAttribute;
 }
@@ -70,4 +95,84 @@ const parseAuthToLocalByType: {
 
 export function parseAuthToLocal(value: PMAuth): Auth {
   return parseAuthToLocalByType[value.type](value);
+}
+
+export function parseAuthToPostman(value: Auth): PMAuth {
+  if (instanceOfAPIKeyAuth(value)) {
+    return {
+      type: 'apikey',
+      apikey: value.apikey.map(parseAuthAttributeToPostman),
+    };
+  }
+  if (instanceOfAWSv4Auth(value)) {
+    return {
+      type: 'awsv4',
+      awsv4: value.awsv4.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfBasicAuth(value)) {
+    return {
+      type: 'basic',
+      basic: value.basic.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfBearerAuth(value)) {
+    return {
+      type: 'bearer',
+      bearer: value.bearer.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfDigestAuth(value)) {
+    return {
+      type: 'digest',
+      digest: value.digest.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfEgdeGridAuth(value)) {
+    return {
+      type: 'edgegrid',
+      edgegrid: value.edgegrid.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfHawkAuth(value)) {
+    return {
+      type: 'hawk',
+      hawk: value.hawk.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfNoAuth(value)) {
+    return {
+      type: 'noauth',
+      noauth: {},
+    };
+  }
+
+  if (instanceOfNTLMAuth(value)) {
+    return {
+      type: 'ntlm',
+      ntlm: value.ntlm.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfOAuth1Auth(value)) {
+    return {
+      type: 'oauth1',
+      oauth1: value.oauth1.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  if (instanceOfOAuth2Auth(value)) {
+    return {
+      type: 'oauth2',
+      oauth2: value.oauth2.map(parseAuthAttributeToPostman),
+    };
+  }
+
+  throw Error('unmapped conversion from auth to postman');
 }

@@ -15,11 +15,11 @@ properties:
   cookie:
     type: array
     items:
-      $ref: "./request.yaml#/definitions/cookie"
+      $ref: "../../request/1.0.0/request.yaml#/definitions/cookie"
   header:
-    $ref: "./request.yaml#/definitions/header-list"
+    $ref: "../../request/1.0.0/request.yaml#/definitions/header-list"
   originalRequest:
-    $ref: "./request.yaml"
+    $ref: "../../request/1.0.0/request.yaml"
   status:
     type: string
     description: 'The response status, e.g: ''200 OK'''

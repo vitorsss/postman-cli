@@ -1,6 +1,9 @@
 import { Parameter } from '@pm-types/local';
-import { Header1, HeaderList } from '@pm-types/postman';
-import { parseVariableToLocal } from '@helpers/parser/variables';
+import { Header, Header1, HeaderList } from '@pm-types/postman';
+import {
+  parseVariableToLocal,
+  parseVariableToPostmanHeader,
+} from '@helpers/parser/variables';
 
 export function parseHeaderToLocal(
   value: HeaderList | Header1 | string
@@ -9,4 +12,8 @@ export function parseHeaderToLocal(
     throw Error('unmapped conversion from string to local header');
   }
   return value.map(parseVariableToLocal);
+}
+
+export function parseHeaderToPostman(value: Parameter[]): Header[] {
+  return value.map(parseVariableToPostmanHeader);
 }

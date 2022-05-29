@@ -1,8 +1,8 @@
 import { Response, schemas } from '@pm-types/local';
 import { Response as PMResponse } from '@pm-types/postman';
-import { parseCookieToLocal } from '@helpers/parser/cookie';
-import { parseHeaderToLocal } from '@helpers/parser/header';
-import { parseRequestToLocal } from '@helpers/parser/request';
+import { parseCookieToLocal, parseCookieToPostman } from '@helpers/parser/cookie';
+import { parseHeaderToLocal, parseHeaderToPostman } from '@helpers/parser/header';
+import { parseRequestToLocal, parseRequestToPostman } from '@helpers/parser/request';
 
 export function parseResponseToLocal(value: PMResponse): {
   name: string;
@@ -30,4 +30,24 @@ export function parseResponseToLocal(value: PMResponse): {
     name,
     response,
   };
+}
+
+export function parseResponseToPostman(name: string, value: Response): PMResponse {
+  const response: PMResponse = {
+    body: value.body || '',
+    code: value.code || 0,
+    status: value.status,
+    originalRequest: parseRequestToPostman(value.originalRequest || {}),
+    name,
+  };
+
+  if (value.header) {
+    response.header = parseHeaderToPostman(value.header);
+  }
+
+  if (value.cookie) {
+    response.cookie = value.cookie.map(parseCookieToPostman);
+  }
+
+  return response;
 }

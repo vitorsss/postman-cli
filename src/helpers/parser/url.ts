@@ -1,6 +1,9 @@
 import { Parameter, URL as LocalURL, URLBase } from '@pm-types/local';
-import { Url as PMUrl } from '@pm-types/postman';
-import { parseVariableToLocal } from '@helpers/parser/variables';
+import { PMUrl1, QueryParam, Url as PMUrl } from '@pm-types/postman';
+import {
+  parseVariableToLocal,
+  parseVariableToPostmanQueryParam,
+} from '@helpers/parser/variables';
 
 function parseRawUrlToLocal(value: string): LocalURL {
   let search: string = '';
@@ -29,6 +32,35 @@ function parseRawUrlToLocal(value: string): LocalURL {
   return url;
 }
 
+function parseRawUrlToPostman(value: string): PMUrl1 {
+  const url: PMUrl1 = {
+    raw: value,
+  };
+  if (value.includes('://')) {
+    [url.protocol, value] = value.split('://', 2);
+  }
+  if (value.includes('#/')) {
+    [value, url.hash] = value.split('#/', 2);
+    url.hash = `/${url.hash}`;
+  }
+  if (value.includes('?')) {
+    let search: string;
+    [value, search] = value.split('?', 2);
+    url.query = search.split('&').map((param: string): QueryParam => {
+      const [key, value] = param.split('=');
+      return {
+        key,
+        value,
+      };
+    });
+  }
+  if (value.includes('/')) {
+    [value, ...url.path] = value.split('/');
+  }
+  url.host = value;
+  return url;
+}
+
 export function parseUrlToLocal(value: PMUrl): URLBase {
   if (typeof value === 'string') {
     let parsedURL = parseRawUrlToLocal(value);
@@ -47,6 +79,25 @@ export function parseUrlToLocal(value: PMUrl): URLBase {
 
   if (value.variable) {
     url.variable = value.variable.map(parseVariableToLocal);
+  }
+
+  return url;
+}
+
+export function parseUrlToPostman(value: URLBase): PMUrl {
+  if (typeof value === 'string') {
+    return value;
+  }
+  const url: PMUrl1 = parseRawUrlToPostman(value.base);
+
+  if (value.query) {
+    url.query = (url.query || []).concat(
+      value.query.map(parseVariableToPostmanQueryParam)
+    );
+  }
+
+  if (value.variable) {
+    url.variable = value.variable.map(parseVariableToPostmanQueryParam);
   }
 
   return url;

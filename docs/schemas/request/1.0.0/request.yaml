@@ -7,7 +7,7 @@ properties:
   body:
     $ref: "#/definitions/body"
   description:
-    $ref: "./description.yaml"
+    $ref: "../../description/1.0.0/description.yaml"
   header:
     $ref: "#/definitions/header-list"
   method:
@@ -75,7 +75,7 @@ definitions:
           urlencoded:
             type: array
             items:
-              $ref: "./variables.yaml#/definitions/parameter"
+              $ref: "../../variables/1.0.0/variables.yaml#/definitions/parameter"
         required:
           - urlencoded
         additionalProperties: false
@@ -111,7 +111,7 @@ definitions:
                         Override Content-Type header of this form data
                         entity.
                     description:
-                      $ref: "./description.yaml"
+                      $ref: "../../description/1.0.0/description.yaml"
                   required:
                     - key
                   additionalProperties: false
@@ -141,7 +141,7 @@ definitions:
                         Override Content-Type header of this form data
                         entity.
                     description:
-                      $ref: "./description.yaml"
+                      $ref: "../../description/1.0.0/description.yaml"
                   required:
                     - key
                   additionalProperties: false
@@ -241,7 +241,7 @@ definitions:
     description: A representation for a list of headers
     type: array
     items:
-      $ref: "./variables.yaml#/definitions/parameter"
+      $ref: "../../variables/1.0.0/variables.yaml#/definitions/parameter"
   method:
     id: "#/definitions/method"
     title: Method
@@ -309,14 +309,14 @@ definitions:
               An array of QueryParams, which is basically the query string
               part of the URL, parsed into separate variables
             items:
-              $ref: "./variables.yaml#/definitions/parameter"
+              $ref: "../../variables/1.0.0/variables.yaml#/definitions/parameter"
           variable:
             type: array
             description:
               Postman supports path variables with the syntax `/path/:variableName/to/somewhere`.
               These variables are stored in this field.
             items:
-              $ref: "./variables.yaml#/definitions/parameter"
+              $ref: "../../variables/1.0.0/variables.yaml#/definitions/parameter"
         required:
           - base
         additionalProperties: false

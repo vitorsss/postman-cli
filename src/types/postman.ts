@@ -1,4 +1,10 @@
-import { UrlEncodedParameter, FormParameter } from '@gen/postman/collection';
+import {
+  UrlEncodedParameter,
+  FormParameter,
+  Host,
+  QueryParam,
+  Variable1,
+} from '@gen/postman/collection';
 
 export * from '@gen/postman/collection';
 
@@ -20,6 +26,18 @@ export interface PMBody {
     [k: string]: unknown;
   };
   disabled?: boolean;
+  [k: string]: unknown;
+}
+
+export interface PMUrl1 {
+  raw?: string;
+  protocol?: string;
+  host?: Host;
+  path?: string[];
+  port?: string;
+  query?: QueryParam[];
+  hash?: string;
+  variable?: Variable1[];
   [k: string]: unknown;
 }
 
