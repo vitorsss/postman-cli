@@ -85,6 +85,9 @@ export async function getWorkspace(
 export async function selectWorkspaceCollections(
   collections: Collection[]
 ): Promise<Collection[]> {
+  if (!collections.length) {
+    return [];
+  }
   const selected = await prompt<PromptValue<string[]>>({
     type: 'multiselect',
     name: 'value',

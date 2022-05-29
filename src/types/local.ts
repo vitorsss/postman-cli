@@ -17,10 +17,10 @@ export { Response, Cookie } from '@gen/types/response';
 export { Variables, Parameter, Description } from '@gen/types/variables';
 
 export const schemas = {
-  variables: '',
-  auth: '',
-  request: '',
-  response: '',
+  variables: 'https://vitorsss.github.io/postman-cli/schemas/variables/1.0.0/variables.yaml',
+  auth: 'https://vitorsss.github.io/postman-cli/schemas/auth/1.0.0/auth.yaml',
+  request: 'https://vitorsss.github.io/postman-cli/schemas/request/1.0.0/request.yaml',
+  response: 'https://vitorsss.github.io/postman-cli/schemas/response/1.0.0/response.yaml',
 };
 
 export interface LocalCollection extends Folder {

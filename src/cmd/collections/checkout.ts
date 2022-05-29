@@ -10,7 +10,12 @@ import {
 } from '@cmd/commons';
 import { parseCollectionToLocal } from '@helpers/parser';
 import { saveLocalCollection } from '@helpers/local';
-import { CollectionsCheckoutArgs, CommandReg, CommonArgs, Configs } from '@pm-types/cmd';
+import {
+  CollectionsCheckoutArgs,
+  CommandReg,
+  CommonArgs,
+  Configs,
+} from '@pm-types/cmd';
 import { Collection } from '@pm-types/postman';
 
 export const checkout: CommandReg<CollectionsCheckoutArgs> = (
@@ -46,10 +51,22 @@ export const checkout: CommandReg<CollectionsCheckoutArgs> = (
         (collection) => collection.id === idName || collection.name === idName
       );
     } else {
-      collections = await selectWorkspaceCollections(workspace.collections);
+      collections = await selectWorkspaceCollections(
+        workspace.collections.filter(
+          (collection) =>
+            !commonDefaults.collections ||
+            !commonDefaults.collections[collection.name]
+        )
+      );
+    }
+    if (!collections.length) {
+      console.log('No collections to checkout');
+      return;
     }
     for await (const collection of collections) {
-      if (existsSync(path.join(options.workdir, collection.name))) {
+      if (
+        existsSync(path.join(options.workdir, 'collections', collection.name))
+      ) {
         console.log(`Skipping existing collection "${collection.name}"`);
         continue;
       }

@@ -1,5 +1,4 @@
 import { Command } from 'commander';
-import { Collection } from '@pm-types/postman';
 
 export interface PromptValue<T> {
   value: T;
@@ -15,7 +14,7 @@ export interface CommonArgs {
 
 export type Configs = CommonArgs & {
   collections?: Record<string, string>;
-}
+};
 
 export type OtherConfigs = {
   [key: string]: any;

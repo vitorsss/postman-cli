@@ -1,7 +1,6 @@
 import { program } from 'commander';
 import configYaml from 'config-yaml';
-import { bootstrap } from '@cmd';
-import { collections } from './src/cmd/collections';
+import { bootstrap, collections } from '@cmd';
 
 program.version(process.env.npm_package_version || 'missing', '-v --version');
 
