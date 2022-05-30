@@ -104,6 +104,33 @@ export async function selectWorkspaceCollections(
   );
 }
 
+export async function selectCollectionForCollection(
+  collection: Collection,
+  collections: Collection[]
+): Promise<Collection | undefined> {
+  if (!collections.length) {
+    return;
+  }
+  const selected = await prompt<PromptValue<string>>({
+    type: 'select',
+    name: 'value',
+    message: `Select collection for "${collection.name}"`,
+    choices: [
+      {
+        message: 'New collection',
+        name: 'new',
+      },
+      ...collections.map((collection) => {
+        return {
+          message: `${collection.name}(${collection.id})`,
+          name: collection.id,
+        };
+      }),
+    ],
+  });
+  return collections.find((collection) => selected.value === collection.id);
+}
+
 export async function mergeAndSaveConfig(
   options: Configs,
   aditionalConfig: OtherConfigs = {}

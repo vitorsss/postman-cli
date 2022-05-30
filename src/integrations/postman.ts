@@ -1,6 +1,6 @@
 import { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios';
 import { parseAxiosError } from '@helpers';
-import { CollectionDetails, EnvironmentDetails, Workspace, WorkspaceDetails } from '@pm-types/postman';
+import { Collection, CollectionDetails, EnvironmentDetails, Workspace, WorkspaceDetails } from '@pm-types/postman';
 
 export class PostmanAPI {
   private requester: AxiosInstance;
@@ -48,6 +48,7 @@ export class PostmanAPI {
         }
         throw parseAxiosError(err);
       }
+      throw err;
     }
   }
 
@@ -69,6 +70,50 @@ export class PostmanAPI {
         }
         throw parseAxiosError(err);
       }
+      throw err;
+    }
+  }
+
+  async createCollection(collection: CollectionDetails): Promise<Collection> {
+    try {
+      const response = await this.requester({
+        method: 'POST',
+        baseURL: this.baseUrl,
+        url: `/collections`,
+        headers: {
+          ...this.authHeaders,
+        },
+        data: {
+          collection,
+        },
+      });
+      return response.data.collection;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw parseAxiosError(err);
+      }
+      throw err;
+    }
+  }
+
+  async updateCollection(id: string, collection: CollectionDetails): Promise<void> {
+    try {
+      await this.requester({
+        method: 'PUT',
+        baseURL: this.baseUrl,
+        url: `/collections/${id}`,
+        headers: {
+          ...this.authHeaders,
+        },
+        data: {
+          collection,
+        },
+      });
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw parseAxiosError(err);
+      }
+      throw err;
     }
   }
 
@@ -90,6 +135,7 @@ export class PostmanAPI {
         }
         throw parseAxiosError(err);
       }
+      throw err;
     }
   }
 }

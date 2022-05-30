@@ -1,7 +1,10 @@
 import { instanceOfFolder, LocalCollection } from '@pm-types/local';
 import { CollectionDetails } from '@pm-types/postman';
 import { parseAuthToLocal, parseAuthToPostman } from '@helpers/parser/auth';
-import { parseEventsToLocal } from '@helpers/parser/events';
+import {
+  parseEventsToLocal,
+  parseEventToPostman,
+} from '@helpers/parser/events';
 import { parseFolderToPostman, parseItemToLocal } from '@helpers/parser/item';
 import {
   parseVariablesToLocal,
@@ -46,6 +49,7 @@ export function parseCollectionToPostman(
         'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',
     },
     item: [],
+    event: [],
   };
 
   if (value.auth) {
@@ -58,7 +62,14 @@ export function parseCollectionToPostman(
 
   for (const itemName in value.itens) {
     const item = value.itens[itemName];
-    if (instanceOfFolder(item)) {
+    if (typeof item === 'string') {
+      const event = parseEventToPostman(itemName, item);
+      if (!event) {
+        continue;
+      }
+      collection.event = collection.event || [];
+      collection.event.push(event);
+    } else if (instanceOfFolder(item)) {
       collection.item.push(parseFolderToPostman(itemName, item));
     }
   }

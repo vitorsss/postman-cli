@@ -1,5 +1,5 @@
 import { Itens } from '@pm-types/local';
-import { EventList } from '@pm-types/postman';
+import { EventList, Event } from '@pm-types/postman';
 
 export function parseEventsToLocal(value: EventList): Itens {
   const itens: Itens = {};
@@ -21,4 +21,22 @@ export function parseEventsToLocal(value: EventList): Itens {
   }
 
   return itens;
+}
+
+export function parseEventToPostman(name: string, value: string): Event | void {
+  let listen: string;
+  if (name === 'prerequest.js') {
+    listen = 'prerequest';
+  } else if (name === 'test.js') {
+    listen = 'test';
+  } else {
+    return;
+  }
+  return {
+    listen,
+    script: {
+      exec: value,
+      type: 'text/javascript',
+    },
+  };
 }

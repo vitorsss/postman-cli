@@ -4,11 +4,11 @@ import {
   getWorkspace,
   registerCommonArgs,
 } from '@cmd/commons';
-import { CollectionsListArgs, CommandReg, CommonArgs } from '@pm-types/cmd';
+import { CollectionsListArgs, CommandReg, CommonArgs, Configs } from '@pm-types/cmd';
 
 export const list: CommandReg<CollectionsListArgs> = (
   program: Command,
-  commonDefaults: CommonArgs,
+  commonDefaults: Configs,
   defaults?: CollectionsListArgs
 ): void => {
   defaults = defaults || {};

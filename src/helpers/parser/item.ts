@@ -12,7 +12,7 @@ import {
   Item as PMItem,
   Folder as PMFolder,
 } from '@pm-types/postman';
-import { parseEventsToLocal } from '@helpers/parser/events';
+import { parseEventsToLocal, parseEventToPostman } from '@helpers/parser/events';
 import {
   parseRequestToLocal,
   parseRequestToPostman,
@@ -89,22 +89,12 @@ export function parseFolderToPostman(name: string, value: Folder): Items {
             parseResponseToPostman(itemName.split('_response.yaml')[0], item)
           );
         } else if (typeof item === 'string') {
-          let listen: string;
-          if (itemName === 'prerequest.js') {
-            listen = 'prerequest';
-          } else if (itemName === 'test.js') {
-            listen = 'test';
-          } else {
+          const event = parseEventToPostman(itemName, item);
+          if (!event) {
             continue;
           }
           pmItem.event = pmItem.event || [];
-          pmItem.event.push({
-            listen,
-            script: {
-              exec: item,
-              type: 'text/javascript',
-            },
-          });
+          pmItem.event.push();
         }
       }
     }

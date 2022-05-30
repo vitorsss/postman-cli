@@ -6,11 +6,11 @@ import {
   mergeAndSaveConfig,
   registerCommonArgs,
 } from '@cmd/commons';
-import { BootstrapArgs, CommandReg, CommonArgs } from '@pm-types/cmd';
+import { BootstrapArgs, CommandReg, CommonArgs, Configs } from '@pm-types/cmd';
 
 export const bootstrap: CommandReg<BootstrapArgs> = (
   program: Command,
-  commonDefaults: CommonArgs,
+  commonDefaults: Configs,
   defaults?: BootstrapArgs
 ): void => {
   defaults = defaults || {};

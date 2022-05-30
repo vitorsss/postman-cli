@@ -22,17 +22,32 @@ export type OtherConfigs = {
 
 export type CommandReg<T> = (
   program: Command,
-  commonDefaults: CommonArgs,
+  commonDefaults: Configs,
   defaults?: T
 ) => void;
 
 export interface BootstrapArgs {}
 
+export interface CollectionsAttachArgs {
+  all: boolean;
+}
+
 export interface CollectionsCheckoutArgs {}
 
 export interface CollectionsListArgs {}
 
+export interface CollectionsPullArgs {
+  all: boolean;
+}
+
+export interface CollectionsPushArgs {
+  all: boolean;
+}
+
 export interface CollectionsArgs {
-  list?: CollectionsListArgs;
+  attach?: CollectionsAttachArgs;
   checkout?: CollectionsCheckoutArgs;
+  list?: CollectionsListArgs;
+  push?: CollectionsPushArgs;
+  pull?: CollectionsPullArgs;
 }
