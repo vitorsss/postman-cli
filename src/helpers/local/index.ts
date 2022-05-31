@@ -74,7 +74,7 @@ async function saveResponse(dir: string, name: string, response: Response) {
 
   await writeFile(
     path.join(dir, name),
-    `# yaml-language-server: $schema=${schemas.request}\n${dumped}`
+    `# yaml-language-server: $schema=${schemas.response}\n${dumped}`
   );
 }
 
