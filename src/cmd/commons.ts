@@ -108,9 +108,6 @@ export async function selectCollectionForCollection(
   collection: Collection,
   collections: Collection[]
 ): Promise<Collection | undefined> {
-  if (!collections.length) {
-    return;
-  }
   const selected = await prompt<PromptValue<string>>({
     type: 'select',
     name: 'value',
