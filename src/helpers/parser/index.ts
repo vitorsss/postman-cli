@@ -19,7 +19,7 @@ export function parseCollectionToLocal(
     itens: {},
   };
 
-  if (value.variable) {
+  if (value.variable?.length) {
     localCollection.variables = parseVariablesToLocal(value.variable);
   }
 
@@ -27,7 +27,7 @@ export function parseCollectionToLocal(
     localCollection.auth = parseAuthToLocal(value.auth);
   }
 
-  if (value.event) {
+  if (value.event?.length) {
     localCollection.itens = parseEventsToLocal(value.event);
   }
 

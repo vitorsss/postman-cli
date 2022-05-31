@@ -73,11 +73,11 @@ export function parseUrlToLocal(value: PMUrl): URLBase {
   }
   const url: LocalURL = parseRawUrlToLocal(value.raw || '');
 
-  if (value.query) {
+  if (value.query?.length) {
     url.query = value.query.map(parseVariableToLocal);
   }
 
-  if (value.variable) {
+  if (value.variable?.length) {
     url.variable = value.variable.map(parseVariableToLocal);
   }
 
@@ -90,13 +90,13 @@ export function parseUrlToPostman(value: URLBase): PMUrl {
   }
   const url: PMUrl1 = parseRawUrlToPostman(value.base);
 
-  if (value.query) {
+  if (value.query?.length) {
     url.query = (url.query || []).concat(
       value.query.map(parseVariableToPostmanQueryParam)
     );
   }
 
-  if (value.variable) {
+  if (value.variable?.length) {
     url.variable = value.variable.map(parseVariableToPostmanQueryParam);
   }
 

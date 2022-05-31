@@ -24,7 +24,7 @@ export function parseRequestToLocal(value: PMRequest): Request {
     request.body = parseBodyToLocal(value.body);
   }
 
-  if (value.header) {
+  if (value.header?.length) {
     request.header = parseHeaderToLocal(value.header);
   }
 
@@ -45,7 +45,7 @@ export function parseRequestToPostman(value: Request): PMRequest {
     request.body = parseBodyToPostman(value.body);
   }
 
-  if (value.header) {
+  if (value.header?.length) {
     request.header = parseHeaderToPostman(value.header);
   }
 

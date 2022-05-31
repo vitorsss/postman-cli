@@ -18,11 +18,11 @@ export function parseResponseToLocal(value: PMResponse): {
     originalRequest: parseRequestToLocal(value.originalRequest || {}),
   };
 
-  if (value.header) {
+  if (value.header?.length) {
     response.header = parseHeaderToLocal(value.header);
   }
 
-  if (value.cookie) {
+  if (value.cookie?.length) {
     response.cookie = value.cookie.map(parseCookieToLocal);
   }
 
@@ -41,11 +41,11 @@ export function parseResponseToPostman(name: string, value: Response): PMRespons
     name,
   };
 
-  if (value.header) {
+  if (value.header?.length) {
     response.header = parseHeaderToPostman(value.header);
   }
 
-  if (value.cookie) {
+  if (value.cookie?.length) {
     response.cookie = value.cookie.map(parseCookieToPostman);
   }
 
