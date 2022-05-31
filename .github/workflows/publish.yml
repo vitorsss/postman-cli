@@ -13,8 +13,12 @@ jobs:
         with:
           node-version: "14.x"
           registry-url: "https://registry.npmjs.org"
-      - name: Install dependencies and build dist
-        run: npm install && npm run dist
+      - name: Install dependencies
+        run: npm install
+      - name: Generate files
+        run: npm run gen
+      - name: Build dist
+        run: npm run dist
       - name: Publish package on NPM
         run: npm publish
         env:
