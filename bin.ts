@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { program } from 'commander';
 import configYaml from 'config-yaml';
 import { bootstrap, collections } from '@cmd';
