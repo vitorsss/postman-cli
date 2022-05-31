@@ -54,6 +54,10 @@ export const push: CommandReg<CollectionsPushArgs> = (
       return;
     }
 
+    if (!workspace.collections) {
+      workspace.collections = [];
+    }
+
     const mappedCollections = commonDefaults.collections;
     let collections: Collection[] = Object.keys(mappedCollections).map(
       (name) => {

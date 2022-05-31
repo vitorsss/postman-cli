@@ -26,6 +26,11 @@ export const list: CommandReg<CollectionsListArgs> = (
       return;
     }
 
+    if (!workspace.collections) {
+      console.log('No collections in current workspace');
+      return;
+    }
+
     workspace.collections.forEach((collection) => {
       console.log(`${collection.name} (${collection.id})`);
     });

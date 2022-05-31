@@ -56,6 +56,11 @@ export const pull: CommandReg<CollectionsPullArgs> = (
       return;
     }
 
+    if (!workspace.collections) {
+      console.log('No collections in current workspace');
+      return;
+    }
+
     const mappedCollections = commonDefaults.collections;
     let collections: Collection[] = Object.keys(mappedCollections).map(
       (name) => {

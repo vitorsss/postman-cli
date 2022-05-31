@@ -53,6 +53,10 @@ export const attach: CommandReg<CollectionsAttachArgs> = (
       return;
     }
 
+    if (!workspace.collections) {
+      workspace.collections = [];
+    }
+
     const collectionsToAttach: Collection[] = [];
     for (const file of await readdir(
       path.join(commonDefaults.workdir, 'collections'),
@@ -85,6 +89,7 @@ export const attach: CommandReg<CollectionsAttachArgs> = (
       return;
     }
     let pushWarning = false;
+    let updateWorkspace = false;
     for await (const collection of collections) {
       const collectionToAttach = await selectCollectionForCollection(
         collection,
@@ -99,6 +104,7 @@ export const attach: CommandReg<CollectionsAttachArgs> = (
         continue;
       }
 
+      updateWorkspace = true;
       const localCollection = await loadLocalCollection(
         commonDefaults,
         collection.name
@@ -113,6 +119,10 @@ export const attach: CommandReg<CollectionsAttachArgs> = (
         `Collection created on remote "${createdCollection.name}"(${createdCollection.id})`
       );
       addedCollections[collection.name] = createdCollection.id;
+      workspace.collections.push(createdCollection);
+    }
+    if (updateWorkspace) {
+      await pmAPI.updateWorkspace(workspace.id, workspace);
     }
     await mergeAndSaveConfig({
       ...options,

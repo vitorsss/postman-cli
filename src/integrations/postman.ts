@@ -52,6 +52,35 @@ export class PostmanAPI {
     }
   }
 
+  async updateWorkspace(id: string, workspace: WorkspaceDetails): Promise<void> {
+    try {
+      await this.requester({
+        method: 'PUT',
+        baseURL: this.baseUrl,
+        url: `/workspaces/${id}`,
+        headers: {
+          ...this.authHeaders,
+        },
+        data: {
+          workspace: {
+            name: workspace.name,
+            description: workspace.description || "",
+            collections: workspace.collections,
+            environments: workspace.environments,
+          } as WorkspaceDetails,
+        },
+      });
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status == 404) {
+          return;
+        }
+        throw parseAxiosError(err);
+      }
+      throw err;
+    }
+  }
+
   async getCollection(id: string): Promise<CollectionDetails | undefined> {
     try {
       const response = await this.requester({

@@ -47,12 +47,12 @@ export interface Workspace {
   id: string;
   name: string;
   type: WorkspaceType;
-  description: string;
+  description?: string;
 }
 
 export interface WorkspaceDetails extends Workspace {
-  collections: Collection[];
-  environments: Environment[];
+  collections?: Collection[];
+  environments?: Environment[];
 }
 
 export interface Collection {

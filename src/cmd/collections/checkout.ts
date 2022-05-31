@@ -43,6 +43,10 @@ export const checkout: CommandReg<CollectionsCheckoutArgs> = (
       return;
     }
 
+    if (!workspace.collections) {
+      workspace.collections = [];
+    }
+
     const addedCollections: Record<string, string> = {};
 
     let collections: Collection[] = [];
