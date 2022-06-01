@@ -178,9 +178,7 @@ export async function loadLocalCollection(
   };
 
   if (existsSync(path.join(collectionDir, 'variables.yaml'))) {
-    collection.variables = await loadVariables(
-      path.join(collectionDir, 'variables.yaml')
-    );
+    collection.variables = await loadVariables(collectionDir);
   }
 
   return collection;
