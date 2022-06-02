@@ -67,6 +67,12 @@ export function parseItemToLocal(value: Items): {
       const { name, item: parsed } = parseItemToLocal(itemValue);
       item.itens[name] = parsed;
     }
+    if (value.event) {
+      const itens = parseEventsToLocal(value.event);
+      for (const name in itens) {
+        item.itens[name] = itens[name];
+      }
+    }
   }
   return {
     name,
@@ -94,7 +100,7 @@ export function parseFolderToPostman(name: string, value: Folder): Items {
             continue;
           }
           pmItem.event = pmItem.event || [];
-          pmItem.event.push();
+          pmItem.event.push(event);
         }
       }
     }
@@ -109,7 +115,14 @@ export function parseFolderToPostman(name: string, value: Folder): Items {
   }
   for (const itemName in value.itens) {
     const item = value.itens[itemName];
-    if (instanceOfFolder(item)) {
+    if (typeof item === 'string') {
+      const event = parseEventToPostman(itemName, item);
+      if (!event) {
+        continue;
+      }
+      folder.event = folder.event || [];
+      folder.event.push(event);
+    } else if (instanceOfFolder(item)) {
       folder.item.push(parseFolderToPostman(itemName, item));
     }
   }
