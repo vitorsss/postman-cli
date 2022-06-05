@@ -2,7 +2,8 @@
 
 import { program } from 'commander';
 import configYaml from 'config-yaml';
-import { bootstrap, collections } from '@cmd';
+import { bootstrap, collections, environments } from '@cmd';
+import { Configs } from '@pm-types/cmd';
 
 program.version(process.env.npm_package_version || 'missing', '-v --version');
 
@@ -16,7 +17,7 @@ const configFileIndex =
 const configFile: string = configFileIndex
   ? process.argv[configFileIndex]
   : './.pm.yaml';
-let config = {} as any;
+let config: Configs = {} as any;
 try {
   config = configFile ? configYaml(configFile) : config;
   config.config = configFile;
@@ -30,7 +31,8 @@ try {
   }
 }
 
-bootstrap(program, config, config.bootstrap);
-collections(program, config, config.collections);
+bootstrap(program, config, config?.cmd?.bootstrap);
+collections(program, config, config?.cmd?.collections);
+environments(program, config, config?.cmd?.environments);
 
 program.parse();

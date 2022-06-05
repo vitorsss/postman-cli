@@ -65,6 +65,11 @@ async function gen() {
       cwd: './docs/schemas/auth/1.0.0/',
     },
     {
+      schema: schemaFromFile('./docs/schemas/environments/1.0.0/environments.yaml', 'yaml'),
+      dest: './generated/types/environments.ts',
+      cwd: './docs/schemas/environments/1.0.0/',
+    },
+    {
       schema: schemaFromFile('./docs/schemas/request/1.0.0/request.yaml', 'yaml'),
       dest: './generated/types/request.ts',
       cwd: './docs/schemas/request/1.0.0/',

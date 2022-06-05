@@ -14,6 +14,8 @@ export interface CommonArgs {
 
 export type Configs = CommonArgs & {
   collections?: Record<string, string>;
+  environments?: Record<string, string>;
+  cmd?: Args;
 };
 
 export type OtherConfigs = {
@@ -25,6 +27,12 @@ export type CommandReg<T> = (
   commonDefaults: Configs,
   defaults?: T
 ) => void;
+
+export interface Args {
+  bootstrap?: BootstrapArgs;
+  collections?: CollectionsArgs;
+  environments?: EnvironmentsArgs;
+}
 
 export interface BootstrapArgs {}
 
@@ -50,4 +58,10 @@ export interface CollectionsArgs {
   list?: CollectionsListArgs;
   push?: CollectionsPushArgs;
   pull?: CollectionsPullArgs;
+}
+
+export interface EnvironmentsListArgs {}
+
+export interface EnvironmentsArgs {
+  list?: EnvironmentsListArgs;
 }

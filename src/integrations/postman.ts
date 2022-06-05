@@ -1,6 +1,13 @@
 import { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios';
 import { parseAxiosError } from '@helpers';
-import { Collection, CollectionDetails, EnvironmentDetails, Workspace, WorkspaceDetails } from '@pm-types/postman';
+import {
+  Collection,
+  CollectionDetails,
+  Environment,
+  EnvironmentDetails,
+  Workspace,
+  WorkspaceDetails,
+} from '@pm-types/postman';
 
 export class PostmanAPI {
   private requester: AxiosInstance;
@@ -52,7 +59,10 @@ export class PostmanAPI {
     }
   }
 
-  async updateWorkspace(id: string, workspace: WorkspaceDetails): Promise<void> {
+  async updateWorkspace(
+    id: string,
+    workspace: WorkspaceDetails
+  ): Promise<void> {
     try {
       await this.requester({
         method: 'PUT',
@@ -64,7 +74,7 @@ export class PostmanAPI {
         data: {
           workspace: {
             name: workspace.name,
-            description: workspace.description || "",
+            description: workspace.description || '',
             collections: workspace.collections,
             environments: workspace.environments,
           } as WorkspaceDetails,
@@ -125,7 +135,10 @@ export class PostmanAPI {
     }
   }
 
-  async updateCollection(id: string, collection: CollectionDetails): Promise<void> {
+  async updateCollection(
+    id: string,
+    collection: CollectionDetails
+  ): Promise<void> {
     try {
       await this.requester({
         method: 'PUT',
@@ -162,6 +175,54 @@ export class PostmanAPI {
         if (err.response?.status == 404) {
           return;
         }
+        throw parseAxiosError(err);
+      }
+      throw err;
+    }
+  }
+
+  async createEnvironment(
+    environment: EnvironmentDetails
+  ): Promise<Environment> {
+    try {
+      const response = await this.requester({
+        method: 'GET',
+        baseURL: this.baseUrl,
+        url: `/environments`,
+        headers: {
+          ...this.authHeaders,
+        },
+        data: {
+          environment,
+        },
+      });
+      return response.data.environment;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw parseAxiosError(err);
+      }
+      throw err;
+    }
+  }
+
+  async updateEnvironment(
+    id: string,
+    environment: EnvironmentDetails
+  ): Promise<void> {
+    try {
+      await this.requester({
+        method: 'GET',
+        baseURL: this.baseUrl,
+        url: `/environments/${id}`,
+        headers: {
+          ...this.authHeaders,
+        },
+        data: {
+          environment,
+        },
+      });
+    } catch (err) {
+      if (err instanceof AxiosError) {
         throw parseAxiosError(err);
       }
       throw err;

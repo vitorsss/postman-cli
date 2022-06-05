@@ -24,7 +24,7 @@ import {
   Request,
   URLEncodedBody,
 } from '@gen/types/request';
-import { FormFileParameter, FormTextParameter, Response } from '@gen/types/response';
+import { Response } from '@gen/types/response';
 import { Variables } from '@gen/types/variables';
 
 export { Auth, AuthAttribute } from '@gen/types/auth';
@@ -39,15 +39,18 @@ export {
 } from '@gen/types/request';
 export { Response, Cookie } from '@gen/types/response';
 export { Variables, Parameter, Description } from '@gen/types/variables';
+export { Environments, EnvironmentVariable } from '@gen/types/environments';
 
 export const schemas = {
-  variables:
-    'https://vitorsss.github.io/postman-cli/schemas/variables/1.0.0/variables.yaml',
   auth: 'https://vitorsss.github.io/postman-cli/schemas/auth/1.0.0/auth.yaml',
+  environments:
+    'https://vitorsss.github.io/postman-cli/schemas/environments/1.0.0/environments.yaml',
   request:
     'https://vitorsss.github.io/postman-cli/schemas/request/1.0.0/request.yaml',
   response:
     'https://vitorsss.github.io/postman-cli/schemas/response/1.0.0/response.yaml',
+  variables:
+    'https://vitorsss.github.io/postman-cli/schemas/variables/1.0.0/variables.yaml',
 };
 
 export interface LocalCollection extends Folder {

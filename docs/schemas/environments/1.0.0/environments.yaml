@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-04/schema
+$schema: http://json-schema.org/draft-04/schema#
+id: "http://schema.postman-cli.com/environments/1.0.0/"
+title: Environments
+properties:
+  variables:
+    type: object
+    additionalProperties:
+      $ref: "#/definitions/environment-variable"
+  $schema:
+    type: string
+required:
+  - variables
+additionalProperties: false
+definitions:
+  environment-variable:
+    id: "#/definitions/environment-variable"
+    title: EnvironmentVariable
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      envs:
+        type: object
+        additionalProperties:
+          type: string
+      type:
+        type: string
+        enum:
+          - text
+          - secret
+    required:
+      - envs
+      - enabled
+      - type
+    additionalProperties: false
