@@ -7,6 +7,7 @@ import {
   selectWorkspaceCollections,
   selectCollectionForCollection,
   mergeAndSaveConfig,
+  workspaceRequiresUID,
 } from '@cmd/commons';
 import { parseCollectionToPostman } from '@helpers/parser';
 import { loadLocalCollection } from '@helpers/local';
@@ -74,8 +75,6 @@ export const attach: CommandReg<CollectionsAttachArgs> = (
       }
     }
 
-    const addedCollections: Record<string, string> = {};
-
     let collections: Collection[] = collectionsToAttach;
     if (name) {
       collections = collectionsToAttach.filter(
@@ -88,23 +87,38 @@ export const attach: CommandReg<CollectionsAttachArgs> = (
       console.log('No collections to attach');
       return;
     }
+    const addedCollections: Record<string, string> = {};
+    const attachedCollections: Record<string, boolean> = {};
+    for (const collectionName in commonDefaults.collections) {
+      attachedCollections[commonDefaults.collections[collectionName]] = true;
+    }
     let pushWarning = false;
     let updateWorkspace = false;
     for await (const collection of collections) {
       const collectionToAttach = await selectCollectionForCollection(
         collection,
-        workspace.collections
+        workspace.collections.filter((collection) => {
+          return (
+            !attachedCollections[collection.id] &&
+            !attachedCollections[collection.uid]
+          );
+        })
       );
       if (collectionToAttach) {
         console.log(
           `Attaching "${collection.name}" with existing collection "${collectionToAttach.name}"(${collectionToAttach.id})`
         );
-        addedCollections[collection.name] = collectionToAttach.id;
+        const collectionID = workspaceRequiresUID(workspace)
+          ? collectionToAttach.uid
+          : collectionToAttach.id;
+        addedCollections[collection.name] = collectionID;
+        attachedCollections[collectionID] = true;
         pushWarning = true;
         continue;
       }
 
       updateWorkspace = true;
+      console.log(`Loading local collection "${collection.name}"`);
       const localCollection = await loadLocalCollection(
         commonDefaults,
         collection.name
@@ -113,12 +127,17 @@ export const attach: CommandReg<CollectionsAttachArgs> = (
         console.log(`Skipping missing local collection "${collection.name}"`);
         continue;
       }
+      console.log(`Pushing collection "${collection.name}"`);
       const collectionDetails = parseCollectionToPostman(localCollection);
       const createdCollection = await pmAPI.createCollection(collectionDetails);
       console.log(
         `Collection created on remote "${createdCollection.name}"(${createdCollection.id})`
       );
-      addedCollections[collection.name] = createdCollection.id;
+      const collectionID = workspaceRequiresUID(workspace)
+        ? createdCollection.uid
+        : createdCollection.id;
+      addedCollections[collection.name] = collectionID;
+      attachedCollections[collectionID] = true;
       workspace.collections.push(createdCollection);
     }
     if (updateWorkspace) {

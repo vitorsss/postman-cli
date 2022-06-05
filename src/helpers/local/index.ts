@@ -22,6 +22,15 @@ const dumpOptions: DumpOptions = {
   lineWidth: 4000,
 };
 
+const specialCharsReplaceName: RegExp = /(\/|\\|>|<|:|"|\||\?|\*|&|;)/g;
+
+function encodeItemName(itemName: string): string {
+  return itemName.replace(specialCharsReplaceName, (partial) => encodeURIComponent(partial));
+}
+function decodeItemName(itemName: string): string {
+  return decodeURIComponent(itemName);
+}
+
 const defaultEncoding: BufferEncoding = 'utf-8';
 
 async function saveVariables(dir: string, variables: Variables) {
@@ -106,13 +115,14 @@ async function saveFolder(dir: string, name: string, folder: Folder) {
 
   for (const itemName in folder.itens) {
     const item: Item = folder.itens[itemName];
+    const encodedItemName: string = encodeItemName(itemName);
 
     if (typeof item === 'string') {
-      await saveRawData(folderDir, itemName, item);
+      await saveRawData(folderDir, encodedItemName, item);
     } else if (instanceOfResponse(item)) {
-      await saveResponse(folderDir, itemName, item);
+      await saveResponse(folderDir, encodedItemName, item);
     } else if (instanceOfFolder(item)) {
-      await saveFolder(folderDir, itemName, item);
+      await saveFolder(folderDir, encodedItemName, item);
     }
   }
 }
@@ -129,17 +139,18 @@ async function loadFolder(dir: string, name: string): Promise<Folder> {
 
   for (const file of files) {
     const basename: string = path.basename(file.name);
+    const decodedBaseName: string = decodeItemName(basename)
 
     if (file.isDirectory()) {
-      folder.itens[basename] = await loadFolder(folderDir, basename);
+      folder.itens[decodedBaseName] = await loadFolder(folderDir, basename);
     } else if (basename === 'request.yaml') {
       folder.request = await loadRequest(folderDir);
     } else if (basename === 'auth.yaml') {
       folder.auth = await loadAuth(folderDir);
     } else if (basename.endsWith('_response.yaml')) {
-      folder.itens[basename] = await loadResponse(folderDir, basename);
+      folder.itens[decodedBaseName] = await loadResponse(folderDir, basename);
     } else {
-      folder.itens[basename] = await loadRawData(folderDir, basename);
+      folder.itens[decodedBaseName] = await loadRawData(folderDir, basename);
     }
   }
 

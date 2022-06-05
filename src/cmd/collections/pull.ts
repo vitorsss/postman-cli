@@ -13,9 +13,7 @@ import {
 } from '@pm-types/cmd';
 import { Collection } from '@pm-types/postman';
 import { saveLocalCollection } from '@helpers/local';
-import {
-  parseCollectionToLocal,
-} from '@helpers/parser';
+import { parseCollectionToLocal } from '@helpers/parser';
 
 export const pull: CommandReg<CollectionsPullArgs> = (
   program: Command,
@@ -89,7 +87,11 @@ export const pull: CommandReg<CollectionsPullArgs> = (
       return;
     }
     for await (const collection of collections) {
-      if (!workspace.collections.find((value) => value.id === collection.id)) {
+      if (
+        !workspace.collections.find(
+          (value) => value.id === collection.id || value.uid === collection.id
+        )
+      ) {
         console.log(
           `Skipping missing remote collection "${collection.name}" (${collection.id})`
         );
@@ -101,6 +103,7 @@ export const pull: CommandReg<CollectionsPullArgs> = (
         console.log(`Collection "${collection.name}" not found`);
         continue;
       }
+      console.log(`Saving collection "${collection.name}"`);
       const localCollection = parseCollectionToLocal(collectionDetails);
       await saveLocalCollection(commonDefaults, localCollection);
     }

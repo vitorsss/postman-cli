@@ -7,6 +7,7 @@ import {
   registerCommonArgs,
   selectWorkspaceCollections,
   mergeAndSaveConfig,
+  workspaceRequiresUID,
 } from '@cmd/commons';
 import { parseCollectionToLocal } from '@helpers/parser';
 import { saveLocalCollection } from '@helpers/local';
@@ -75,14 +76,18 @@ export const checkout: CommandReg<CollectionsCheckoutArgs> = (
         continue;
       }
       console.log(`Fetching collection "${collection.name}"`);
-      const collectionDetails = await pmAPI.getCollection(collection.id);
+      const collectionID = workspaceRequiresUID(workspace)
+        ? collection.uid
+        : collection.id;
+      const collectionDetails = await pmAPI.getCollection(collectionID);
       if (!collectionDetails) {
         console.log(`Collection "${collection.name}" not found`);
         continue;
       }
+      console.log(`Saving collection "${collection.name}"`);
       const localCollection = parseCollectionToLocal(collectionDetails);
       await saveLocalCollection(commonDefaults, localCollection);
-      addedCollections[collection.name] = collection.id;
+      addedCollections[collection.name] = collectionID;
     }
     await mergeAndSaveConfig({
       ...options,

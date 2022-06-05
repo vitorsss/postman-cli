@@ -86,7 +86,11 @@ export const push: CommandReg<CollectionsPushArgs> = (
       return;
     }
     for await (const collection of collections) {
-      if (!workspace.collections.find((value) => value.id === collection.id)) {
+      if (
+        !workspace.collections.find(
+          (value) => value.id === collection.id || value.uid === collection.id
+        )
+      ) {
         console.log(
           `Skipping missing remote collection "${collection.name}" (${collection.id})`
         );
@@ -101,6 +105,7 @@ export const push: CommandReg<CollectionsPushArgs> = (
         console.log(`Skipping missing local collection "${collection.name}"`);
         continue;
       }
+      console.log(`Pushing collection "${collection.name}"`);
       const collectionDetails = parseCollectionToPostman(localCollection);
 
       await pmAPI.updateCollection(collection.id, collectionDetails);

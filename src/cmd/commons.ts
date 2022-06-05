@@ -150,3 +150,7 @@ export async function mergeAndSaveConfig(
 
   await writeFile(options.config, dumpedConfig);
 }
+
+export function workspaceRequiresUID(workspace: WorkspaceDetails): boolean {
+  return workspace.type === 'public' || workspace.type === 'team';
+}
