@@ -5,7 +5,9 @@ import configYaml from 'config-yaml';
 import { bootstrap, collections, environments } from '@cmd';
 import { Configs } from '@pm-types/cmd';
 
-program.version(process.env.npm_package_version || 'missing', '-v --version');
+import { version, checkUpdate } from '@helpers/version';
+
+program.version(version, '-v --version');
 
 const configFileFlags = ['-c', '--config'];
 
@@ -35,4 +37,9 @@ bootstrap(program, config, config?.cmd?.bootstrap);
 collections(program, config, config?.cmd?.collections);
 environments(program, config, config?.cmd?.environments);
 
-program.parse();
+async function init() {
+  await checkUpdate();
+  program.parse();
+}
+
+init();
