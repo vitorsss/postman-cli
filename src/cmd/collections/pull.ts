@@ -78,6 +78,9 @@ export const pull: CommandReg<CollectionsPullArgs> = (
             uid: '',
           },
         ];
+      } else {
+        console.log(`Missing local collection "${name}"`);
+        return;
       }
     } else if (!options.all) {
       collections = await selectWorkspaceCollections(collections);

@@ -60,8 +60,26 @@ export interface CollectionsArgs {
   pull?: CollectionsPullArgs;
 }
 
+export interface EnvironmentsAttachArgs {
+  all: boolean;
+}
+
+export interface EnvironmentsCheckoutArgs {}
+
 export interface EnvironmentsListArgs {}
 
+export interface EnvironmentsPullArgs {
+  all: boolean;
+}
+
+export interface EnvironmentsPushArgs {
+  all: boolean;
+}
+
 export interface EnvironmentsArgs {
+  attach?: EnvironmentsAttachArgs;
+  checkout?: EnvironmentsCheckoutArgs;
   list?: EnvironmentsListArgs;
+  pull?: EnvironmentsPullArgs;
+  push?: EnvironmentsPushArgs;
 }

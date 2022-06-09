@@ -68,12 +68,11 @@ export interface Environment {
 }
 
 export interface EnvironmentDetails extends Environment {
-  uid: never;
   isPublic?: boolean;
-  owner: string;
+  owner?: string;
   createdAt?: string;
   updatedAt?: string;
-  values: PMEnvironmentVariable;
+  values: PMEnvironmentVariable[];
 }
 
 export interface PMEnvironmentVariable {

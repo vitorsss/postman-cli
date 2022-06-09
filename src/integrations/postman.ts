@@ -186,7 +186,7 @@ export class PostmanAPI {
   ): Promise<Environment> {
     try {
       const response = await this.requester({
-        method: 'GET',
+        method: 'POST',
         baseURL: this.baseUrl,
         url: `/environments`,
         headers: {
@@ -211,7 +211,7 @@ export class PostmanAPI {
   ): Promise<void> {
     try {
       await this.requester({
-        method: 'GET',
+        method: 'PUT',
         baseURL: this.baseUrl,
         url: `/environments/${id}`,
         headers: {

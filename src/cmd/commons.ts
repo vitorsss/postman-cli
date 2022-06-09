@@ -8,7 +8,7 @@ import deepmerge from 'deepmerge';
 import { dump } from 'js-yaml';
 import { writeFile } from 'fs/promises';
 import { CommonArgs, Configs, OtherConfigs, PromptValue } from '@pm-types/cmd';
-import { Collection, WorkspaceDetails } from '@pm-types/postman';
+import { Collection, Environment, WorkspaceDetails } from '@pm-types/postman';
 
 export function registerCommonArgs(
   program: Command,
@@ -128,6 +128,53 @@ export async function selectCollectionForCollection(
   return collections.find((collection) => selected.value === collection.id);
 }
 
+
+export async function selectWorkspaceEnvironments(
+  environments: Environment[]
+): Promise<Environment[]> {
+  if (!environments.length) {
+    return [];
+  }
+  const selected = await prompt<PromptValue<string[]>>({
+    type: 'multiselect',
+    name: 'value',
+    message: 'Select environments',
+    choices: environments.map((environment) => {
+      return {
+        message: `${environment.name}(${environment.id})`,
+        name: environment.id,
+      };
+    }),
+  });
+  return environments.filter((environment) =>
+    selected.value.includes(environment.id)
+  );
+}
+
+export async function selectEnvironmentForEnvironment(
+  environment: Environment,
+  environments: Environment[]
+): Promise<Environment | undefined> {
+  const selected = await prompt<PromptValue<string>>({
+    type: 'select',
+    name: 'value',
+    message: `Select environment for "${environment.name}"`,
+    choices: [
+      {
+        message: 'New environment',
+        name: 'new',
+      },
+      ...environments.map((environment) => {
+        return {
+          message: `${environment.name}(${environment.id})`,
+          name: environment.id,
+        };
+      }),
+    ],
+  });
+  return environments.find((environment) => selected.value === environment.id);
+}
+
 export async function mergeAndSaveConfig(
   options: Configs,
   aditionalConfig: OtherConfigs = {}
@@ -143,6 +190,8 @@ export async function mergeAndSaveConfig(
     workdir: options.workdir,
     workspace: options.workspace,
     collections: options.collections,
+    environments: options.environments,
+    cmd: options.cmd,
     ...aditionalConfig,
   });
 

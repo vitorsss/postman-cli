@@ -1,6 +1,6 @@
 {
   "name": "@vitorsss/postman-cli",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Postman CLI",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
