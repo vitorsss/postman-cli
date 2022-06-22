@@ -5,6 +5,7 @@ import { existsSync } from 'fs';
 import { requester } from '@helpers';
 import { PostmanAPI } from '@integrations/postman';
 import deepmerge from 'deepmerge';
+import deepclean from 'clean-deep';
 import { dump } from 'js-yaml';
 import { writeFile } from 'fs/promises';
 import { CommonArgs, Configs, OtherConfigs, PromptValue } from '@pm-types/cmd';
@@ -184,7 +185,7 @@ export async function mergeAndSaveConfig(
     config = configYaml(options.config);
   }
 
-  config = deepmerge(config, {
+  config = deepmerge(config, deepclean({
     token: options.token,
     baseurl: options.baseurl,
     workdir: options.workdir,
@@ -192,8 +193,8 @@ export async function mergeAndSaveConfig(
     collections: options.collections,
     environments: options.environments,
     cmd: options.cmd,
-    ...aditionalConfig,
-  });
+    ...deepclean(aditionalConfig),
+  }));
 
   const dumpedConfig = dump(config);
 
