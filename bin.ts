@@ -2,7 +2,12 @@
 
 import { program } from 'commander';
 import configYaml from 'config-yaml';
-import { bootstrap, collections, environments } from '@cmd';
+import {
+  bootstrap,
+  collections,
+  environments,
+  globals
+} from '@cmd';
 import { Configs } from '@pm-types/cmd';
 
 import { version, checkUpdate } from '@helpers/version';
@@ -36,6 +41,7 @@ try {
 bootstrap(program, config, config?.cmd?.bootstrap);
 collections(program, config, config?.cmd?.collections);
 environments(program, config, config?.cmd?.environments);
+globals(program, config, config?.cmd?.globals);
 
 async function init() {
   await checkUpdate();

@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=http://json-schema.org/draft-04/schema
-$schema: http://json-schema.org/draft-04/schema#
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: https://json-schema.org/draft/2020-12/schema
 id: "http://schema.postman-cli.com/description/1.0.0/"
 title: Description
 description: A Description can be a raw text, or be an object, which holds the description along with its format.

@@ -40,11 +40,14 @@ export {
 export { Response, Cookie } from '@gen/types/response';
 export { Variables, Parameter, Description } from '@gen/types/variables';
 export { Environments, EnvironmentVariable } from '@gen/types/environments';
+export { Globals, GlobalVariable } from '@gen/types/globals';
 
 export const schemas = {
   auth: 'https://vitorsss.github.io/postman-cli/schemas/auth/1.0.0/auth.yaml',
   environments:
     'https://vitorsss.github.io/postman-cli/schemas/environments/1.0.0/environments.yaml',
+  globals:
+    'https://vitorsss.github.io/postman-cli/schemas/globals/1.0.0/globals.yaml',
   request:
     'https://vitorsss.github.io/postman-cli/schemas/request/1.0.0/request.yaml',
   response:

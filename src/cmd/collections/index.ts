@@ -15,6 +15,8 @@ export const collections: CommandReg<CollectionsArgs> = (
   defaults = defaults || {};
   const cmd = program
     .command('collections')
+    .alias('coll')
+    .alias('c')
     .description('Collections operations');
 
   registerCommonArgs(cmd, commonDefaults);

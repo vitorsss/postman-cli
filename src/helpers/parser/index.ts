@@ -8,3 +8,7 @@ export {
   mergeLocalEnvironments,
   listEnvironmentsNames,
 } from '@helpers/parser/environments';
+export {
+  parseGlobalToLocal,
+  parseGlobalToPostman,
+} from '@helpers/parser/globals';

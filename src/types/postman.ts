@@ -75,6 +75,10 @@ export interface EnvironmentDetails extends Environment {
   values: PMEnvironmentVariable[];
 }
 
+export interface Global {
+  values: PMEnvironmentVariable[];
+}
+
 export interface PMEnvironmentVariable {
   key: string;
   value: string;

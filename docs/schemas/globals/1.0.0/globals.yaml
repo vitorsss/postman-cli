@@ -1,36 +1,34 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: https://json-schema.org/draft/2020-12/schema
-id: "http://schema.postman-cli.com/environments/1.0.0/"
-title: Environments
+id: "http://schema.postman-cli.com/globals/1.0.0/"
+title: Globals
 properties:
   variables:
     type: object
     additionalProperties:
-      $ref: "#/definitions/environment-variable"
+      $ref: "#/definitions/global-variable"
   $schema:
     type: string
 required:
   - variables
 additionalProperties: false
 definitions:
-  environment-variable:
-    id: "#/definitions/environment-variable"
-    title: EnvironmentVariable
+  global-variable:
+    id: "#/definitions/global-variable"
+    title: GlobalVariable
     properties:
       enabled:
         type: boolean
         default: true
-      envs:
-        type: object
-        additionalProperties:
-          type: string
       type:
         type: string
         enum:
           - text
           - secret
+      value:
+        type: string
     required:
-      - envs
       - enabled
       - type
+      - value
     additionalProperties: false

@@ -1,10 +1,11 @@
-import { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios';
+import { AxiosError, AxiosInstance, RawAxiosRequestHeaders } from 'axios';
 import { parseAxiosError } from '@helpers';
 import {
   Collection,
   CollectionDetails,
   Environment,
   EnvironmentDetails,
+  Global,
   Workspace,
   WorkspaceDetails,
 } from '@pm-types/postman';
@@ -12,7 +13,7 @@ import {
 export class PostmanAPI {
   private requester: AxiosInstance;
   private baseUrl: string;
-  private authHeaders: AxiosRequestHeaders;
+  private authHeaders: RawAxiosRequestHeaders;
   constructor(requester: AxiosInstance, baseUrl: string, token: string) {
     this.requester = requester;
     this.baseUrl = baseUrl;
@@ -220,6 +221,52 @@ export class PostmanAPI {
         data: {
           environment,
         },
+      });
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw parseAxiosError(err);
+      }
+      throw err;
+    }
+  }
+
+  async getGlobal(
+    workspaceId: string,
+  ): Promise<Global | undefined> {
+    try {
+      const response = await this.requester({
+        method: 'GET',
+        baseURL: this.baseUrl,
+        url: `/workspaces/${workspaceId}/global-variables`,
+        headers: {
+          ...this.authHeaders,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status == 404) {
+          return;
+        }
+        throw parseAxiosError(err);
+      }
+      throw err;
+    }
+  }
+
+  async updateGlobal(
+    workspaceId: string,
+    global: Global,
+  ): Promise<void> {
+    try {
+      await this.requester({
+        method: 'PUT',
+        baseURL: this.baseUrl,
+        url: `/workspaces/${workspaceId}/global-variables`,
+        headers: {
+          ...this.authHeaders,
+        },
+        data: global,
       });
     } catch (err) {
       if (err instanceof AxiosError) {

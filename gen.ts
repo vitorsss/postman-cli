@@ -1,4 +1,4 @@
-import { compile, compileFromFile } from 'json-schema-to-typescript';
+import { compile } from 'json-schema-to-typescript';
 import { JSONSchema4 } from 'json-schema';
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import { load } from 'js-yaml';
@@ -11,8 +11,8 @@ const parserByType = {
   json: JSON.parse,
   yaml: load,
 } as {
-  [key in FileType]: (text: string) => any;
-};
+    [key in FileType]: (text: string) => any;
+  };
 
 async function schemaFromFile(
   path: string,
@@ -68,6 +68,11 @@ async function gen() {
       schema: schemaFromFile('./docs/schemas/environments/1.0.0/environments.yaml', 'yaml'),
       dest: './generated/types/environments.ts',
       cwd: './docs/schemas/environments/1.0.0/',
+    },
+    {
+      schema: schemaFromFile('./docs/schemas/globals/1.0.0/globals.yaml', 'yaml'),
+      dest: './generated/types/globals.ts',
+      cwd: './docs/schemas/globals/1.0.0/',
     },
     {
       schema: schemaFromFile('./docs/schemas/request/1.0.0/request.yaml', 'yaml'),

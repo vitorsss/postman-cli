@@ -15,6 +15,8 @@ export const environments: CommandReg<EnvironmentsArgs> = (
   defaults = defaults || {};
   const cmd = program
     .command('environments')
+    .alias('env')
+    .alias('e')
     .description('Environments operations');
 
   registerCommonArgs(cmd, commonDefaults);

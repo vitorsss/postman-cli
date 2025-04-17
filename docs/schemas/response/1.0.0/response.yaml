@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=http://json-schema.org/draft-04/schema
-$schema: http://json-schema.org/draft-04/schema#
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: https://json-schema.org/draft/2020-12/schema
 id: "http://schema.postman-cli.com/response/1.0.0/"
 title: Response
 description: A response represents an HTTP response.

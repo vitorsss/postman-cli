@@ -32,17 +32,18 @@ export interface Args {
   bootstrap?: BootstrapArgs;
   collections?: CollectionsArgs;
   environments?: EnvironmentsArgs;
+  globals?: GlobalsArgs;
 }
 
-export interface BootstrapArgs {}
+export interface BootstrapArgs { }
 
 export interface CollectionsAttachArgs {
   all: boolean;
 }
 
-export interface CollectionsCheckoutArgs {}
+export interface CollectionsCheckoutArgs { }
 
-export interface CollectionsListArgs {}
+export interface CollectionsListArgs { }
 
 export interface CollectionsPullArgs {
   all: boolean;
@@ -64,9 +65,9 @@ export interface EnvironmentsAttachArgs {
   all: boolean;
 }
 
-export interface EnvironmentsCheckoutArgs {}
+export interface EnvironmentsCheckoutArgs { }
 
-export interface EnvironmentsListArgs {}
+export interface EnvironmentsListArgs { }
 
 export interface EnvironmentsPullArgs {
   all: boolean;
@@ -82,4 +83,13 @@ export interface EnvironmentsArgs {
   list?: EnvironmentsListArgs;
   pull?: EnvironmentsPullArgs;
   push?: EnvironmentsPushArgs;
+}
+
+export interface GlobalsPullArgs { }
+
+export interface GlobalsPushArgs { }
+
+export interface GlobalsArgs {
+  pull?: GlobalsPullArgs;
+  push?: GlobalsPushArgs;
 }

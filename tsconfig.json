@@ -1,17 +1,16 @@
-
 {
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
     "dist",
     "*.config.js",
-    "gen.ts",
+    "gen.ts"
   ],
   "include": [
     "./src",
     "./generated",
     "./bin.ts",
-    "./index.ts",
+    "./index.ts"
   ],
   "compilerOptions": {
     "module": "CommonJS",
@@ -29,21 +28,41 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@gen/*": ["./generated/*"],
-      "@cmd/*": ["./src/cmd/*"],
-      "@cmd": ["./src/cmd/index"],
-      "@helpers/*": ["./src/helpers/*"],
-      "@helpers": ["./src/helpers/index"],
-      "@integrations/*": ["./src/integrations/*"],
-      "@integrations": ["./src/integrations/index"],
-      "@pm-types/*": ["./src/types/*"],
-      "@pm-types": ["./src/types/index"],
-    },
+      "@gen/*": [
+        "./generated/*"
+      ],
+      "@cmd/*": [
+        "./src/cmd/*"
+      ],
+      "@cmd": [
+        "./src/cmd/index"
+      ],
+      "@helpers/*": [
+        "./src/helpers/*"
+      ],
+      "@helpers": [
+        "./src/helpers/index"
+      ],
+      "@integrations/*": [
+        "./src/integrations/*"
+      ],
+      "@integrations": [
+        "./src/integrations/index"
+      ],
+      "@pm-types/*": [
+        "./src/types/*"
+      ],
+      "@pm-types": [
+        "./src/types/index"
+      ]
+    }
   },
   "tsc-alias": {
-    "verbose": true,
+    "verbose": true
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"],
-  },
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }

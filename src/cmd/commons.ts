@@ -92,7 +92,7 @@ export async function selectWorkspaceCollections(
   const selected = await prompt<PromptValue<string[]>>({
     type: 'multiselect',
     name: 'value',
-    message: 'Select collections',
+    message: 'Select collections (select with <Space>, continue with <Enter>)',
     choices: collections.map((collection) => {
       return {
         message: `${collection.name}(${collection.id})`,
@@ -139,7 +139,7 @@ export async function selectWorkspaceEnvironments(
   const selected = await prompt<PromptValue<string[]>>({
     type: 'multiselect',
     name: 'value',
-    message: 'Select environments',
+    message: 'Select environments (select with <Space>, continue with <Enter>)',
     choices: environments.map((environment) => {
       return {
         message: `${environment.name}(${environment.id})`,
